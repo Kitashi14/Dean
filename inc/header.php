@@ -60,10 +60,14 @@ $_SESSION['isGradeEntryAllowed'] = $status['isGradeEntryAllowed'];
             //checking if user is admin or not
             if (isset($_SESSION['uid']) && isset($_SESSION['isAdmin'])) {
                 if ($_SESSION['isAdmin'] == true) {
-                    // adding toggle page button
-                    echo '<a class="bg-blue-600 text-white py-1 px-3 mr-3" href="', rootUrl, '/pages/', $page == 'admin.php'? $_SESSION['category'] : 'admin' ,'.php">',$page == 'admin.php'? ucwords($_SESSION['category']) : 'Admin','</a>';
+                    // adding toggle admin page button if admin
+                    echo '<a class="bg-blue-600 text-white py-1 px-3 mr-3" href="', rootUrl, '/pages/', $page == $_SESSION['category'] . '.php' ? 'admin' : $_SESSION['category'], '.php">', $page == $_SESSION['category'] . '.php' ? 'Admin' : ucwords($_SESSION['category']), '</a>';
+                } else {
+                    //if not admin then add category page button
+                    echo  $page == $_SESSION['category'] . '.php' ? '' : '<a class="bg-blue-600 text-white py-1 px-3 mr-3" href="'. rootUrl. '/pages/'. $_SESSION['category'] . '.php">'.ucwords($_SESSION['category']). '</a>';
                 }
             }
+
             ?>
         </div>
     </header>
