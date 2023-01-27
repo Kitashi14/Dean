@@ -1,11 +1,30 @@
 <?php
-    $rootDir = $_SERVER['DOCUMENT_ROOT'].'/deanproject';
-    require_once($rootDir . '/config.php');
 
-    session_start();
+//importing env variables 
+$rootDir = $_SERVER['DOCUMENT_ROOT'] . '/deanproject';
+require_once($rootDir . '/config.php');
+
+//starting session
+session_start();
+
+//connecting to database
+require_once($rootDir . '/database.php');
+
+
+//fetching current status of the site
+$sql = 'SELECT * FROM status ORDER BY id DESC LIMIT 1';
+$result = mysqli_query($conn, $sql);
+$status = mysqli_fetch_all($result, MYSQLI_ASSOC)[0];
+
+// storing current status in session superglobals
+$_SESSION['currentSemester'] = $status['currentSemester'];
+$_SESSION['isCourseEntryAllowed'] = $status['isCourseEntryAllowed'];
+$_SESSION['isGradeEntryAllowed'] = $status['isGradeEntryAllowed'];
+
+
 ?>
 
-
+<!-- header of every page  -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +45,5 @@
 <body>
     <header class=" w-full bg-gray-300 py-4 px-4 flex flex-row justify-between space-x-2 ">
         <a class="bg-blue-600 text-white py-1 px-3 ml-5" href="<?php echo rootUrl ?>">Home</a>
-        <a class="bg-blue-600 text-white py-1 px-3 mr-3" href="<?php
-                    echo rootUrl , !isset($_SESSION['uid']) ? '/pages/login.php' : '/controllers/logout.php';
-                    ?>"><?php echo !isset($_SESSION['uid']) ? 'Log In' : 'Log Out'; ?></a>
+        <a class="bg-blue-600 text-white py-1 px-3 mr-3" href="<?php echo rootUrl, !isset($_SESSION['uid']) ? '/pages/login.php' : '/controllers/logout.php'; ?>"><?php echo !isset($_SESSION['uid']) ? 'Log In' : 'Log Out'; ?></a>
     </header>
