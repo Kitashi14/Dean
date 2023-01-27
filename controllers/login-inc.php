@@ -28,11 +28,8 @@ if (isset($_POST['submit'])) {
 
                 $user = $user[0];
 
-                $_SESSION['category'] = $user['category'];
-                $_SESSION['isAdmin'] = $user['isAdmin'];
-                $_SESSION['uid'] = $user['id'];
-
-                $category = $_SESSION['category'];
+                $category = $user['category'];
+                $isAdmin = $user['isAdmin'];
                 $uid = $user['id'];
 
                 $sql = "SELECT * FROM $category WHERE user_id='$uid'";
@@ -45,6 +42,10 @@ if (isset($_POST['submit'])) {
                 } else {
                     $userData = $userData[0];
 
+                    $_SESSION['uid'] = $uid;
+                    $_SESSION['isAdmin'] = $isAdmin;
+                    $_SESSION['category'] = $category;
+                    $_SESSION['email'] = $email;
                     $_SESSION['name'] = $userData['name'];
 
                     if ($category == 'student') {
@@ -55,9 +56,11 @@ if (isset($_POST['submit'])) {
                     } else {
                         $_SESSION['eid'] = $userData['id'];
                         $_SESSION['position'] = $userData['position'];
-                        
+
                         header('Location:  ./../pages/employee.php');
                     }
+
+
                 }
             } else {
                 echo '<script>alert("Invalid credentials. Please login again");';
