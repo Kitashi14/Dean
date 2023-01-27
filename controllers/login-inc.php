@@ -44,7 +44,6 @@ if (isset($_POST['submit'])) {
                     echo 'window.location= "./../pages/login.php"; </script>';
                 } else {
                     $userData = $userData[0];
-                    print_r($userData);
 
                     $_SESSION['name'] = $userData['name'];
 
@@ -56,8 +55,8 @@ if (isset($_POST['submit'])) {
                     } else {
                         $_SESSION['eid'] = $userData['id'];
                         $_SESSION['position'] = $userData['position'];
-
-                        header("Location:  './../pages/employee.php'");
+                        
+                        header('Location:  ./../pages/employee.php');
                     }
                 }
             } else {
