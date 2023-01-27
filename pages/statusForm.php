@@ -7,10 +7,10 @@ include './../inc/header.php';
 // redirecting if user is not set or not admin
 if (isset($_SESSION['uid']) && isset($_SESSION['isAdmin'])) {
     if (!$_SESSION['isAdmin']) {
-        header('Location : ./error.php?error=Page no found');
+        header('Location: ./error.php?error=Page not found');
     }
 } else {
-    header('Location : ./error.php?error=Page no found');
+    header('Location: ./error.php?error=Page not found');
 }
 
 

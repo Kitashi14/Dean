@@ -15,7 +15,7 @@ try {
     } else {
         
         //if not redirecting to necessary error page
-        header('Location : ./error.php?error=Page no found');
+        header('Location: ./error.php?error=Page not found');
     }
 } catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), ' ';

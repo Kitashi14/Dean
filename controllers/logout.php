@@ -7,7 +7,7 @@ session_start(); //to ensure you are using same session
 if (!isset($_SESSION['uid'])) {
 
     // if not then redirecting to error page
-    header('Location : ./error.php?error=Bad Request');
+    header('Location: ./error.php?error=Bad Request');
 } else {
     
     // freeing session variables 
