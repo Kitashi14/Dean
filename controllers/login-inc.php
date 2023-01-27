@@ -2,6 +2,8 @@
 $rootDir = $_SERVER['DOCUMENT_ROOT'] . '/deanproject';
 require_once($rootDir . '/config.php');
 
+session_start();
+
 if (isset($_POST['submit'])) {
 
     require_once($rootDir . '/database.php');
@@ -44,22 +46,18 @@ if (isset($_POST['submit'])) {
                     $userData = $userData[0];
                     print_r($userData);
 
-                    // $_SESSION['name'] = $userData['name'];
-
-                    var_dump($category);
+                    $_SESSION['name'] = $userData['name'];
 
                     if ($category == 'student') {
                         $_SESSION['regNo'] = $userData['regNo'];
                         $_SESSION['program'] = $userData['program'];
 
-                        // header('Location:  ./../pages/student.php');
-                        // echo $userData;
-                        echo $_SESSION['program'];
+                        header('Location:  ./../pages/student.php');
                     } else {
                         $_SESSION['eid'] = $userData['id'];
                         $_SESSION['position'] = $userData['position'];
 
-                        // header("Location:  './../pages/employee.php'");
+                        header("Location:  './../pages/employee.php'");
                     }
                 }
             } else {
