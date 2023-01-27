@@ -35,7 +35,7 @@ $_SESSION['isGradeEntryAllowed'] = $status['isGradeEntryAllowed'];
     <title>Dean Project</title>
 
     <!-- setting favicon  -->
-    <link rel="shortcut icon" href="./../src/images/mnnit_logo.png">
+    <link rel="shortcut icon" href="<?php echo rootUrl?>/src/images/mnnit_logo.png">
 
     <!-- loading fonts  -->
     <link href="https://fonts.googleapis.com/css2?family=Acme&family=Kurale&family=Laila:wght@300;500&family=Lalezar&family=Lato:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet" />
