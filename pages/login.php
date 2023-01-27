@@ -12,14 +12,14 @@ include './../inc/header.php';
                 <label for="email" class="block mb-2 text-sm font-bold text-gray-700">
                     Email
                 </label>
-                <input id="email" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="email" placeholder="Enter your email" required>
+                <input id="email" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="email" name="email" placeholder="Enter your email" required>
             </div>
 
             <div class="w-full space-y-1">
                 <label for="password" class="block mb-2 text-sm font-bold text-gray-700">
                     Password
                 </label>
-                <input id="password" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="password" placeholder="Enter your password" required>
+                <input id="password" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="password" name="password" placeholder="Enter your password" required>
             </div>
 
 
