@@ -1,9 +1,12 @@
 <?php
+//importing header component
 include './../inc/header.php';
 
 
 
 ?>
+
+ <!-- login form  -->
 <div class="flex flex-col justify-between p-2  container mx-auto w-1/3  mt-10 rounded-lg border ">
     <form action="<?php echo rootUrl . '/controllers/login-inc.php' ?>" method="POST" class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
         <div class="flex flex-col justify-around  p-3 space-y-4 items-center">
@@ -33,5 +36,6 @@ include './../inc/header.php';
 </div>
 
 <?php
+// importing footer component
 include './../inc/footer.php';
 ?>
