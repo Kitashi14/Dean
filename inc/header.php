@@ -35,7 +35,7 @@ $_SESSION['isGradeEntryAllowed'] = $status['isGradeEntryAllowed'];
     <title>Dean Project</title>
 
     <!-- setting favicon  -->
-    <link rel="shortcut icon" href="<?php echo rootUrl?>/src/images/mnnit_logo.png">
+    <link rel="shortcut icon" href="<?php echo rootUrl ?>/src/images/mnnit_logo.png">
 
     <!-- loading fonts  -->
     <link href="https://fonts.googleapis.com/css2?family=Acme&family=Kurale&family=Laila:wght@300;500&family=Lalezar&family=Lato:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet" />
@@ -45,5 +45,25 @@ $_SESSION['isGradeEntryAllowed'] = $status['isGradeEntryAllowed'];
 <body>
     <header class=" w-full bg-gray-300 py-4 px-4 flex flex-row justify-between space-x-2 ">
         <a class="bg-blue-600 text-white py-1 px-3 ml-5" href="<?php echo rootUrl ?>">Home</a>
-        <a class="bg-blue-600 text-white py-1 px-3 mr-3" href="<?php echo rootUrl, !isset($_SESSION['uid']) ? '/pages/login.php' : '/controllers/logout.php'; ?>"><?php echo !isset($_SESSION['uid']) ? 'Log In' : 'Log Out'; ?></a>
+        <div>
+
+            <!-- adding toggling login-logout button  -->
+            <a class="bg-blue-600 text-white py-1 px-3 mr-3" href="<?php echo rootUrl, !isset($_SESSION['uid']) ? '/pages/login.php' : '/controllers/logout.php'; ?>"><?php echo !isset($_SESSION['uid']) ? 'Log In' : 'Log Out'; ?></a>
+
+            <!-- adding toggling admin button  -->
+            <?php
+            // getting current page name
+            $currentUrl =  $_SERVER['PHP_SELF'];
+            $page = explode('/', $currentUrl);
+            $page = end($page);
+
+            //checking if user is admin or not
+            if (isset($_SESSION['uid']) && isset($_SESSION['isAdmin'])) {
+                if ($_SESSION['isAdmin'] == true) {
+                    // adding toggle page button
+                    echo '<a class="bg-blue-600 text-white py-1 px-3 mr-3" href="', rootUrl, '/pages/', $page == 'admin.php'? $_SESSION['category'] : 'admin' ,'.php">',$page == 'admin.php'? ucwords($_SESSION['category']) : 'Admin','</a>';
+                }
+            }
+            ?>
+        </div>
     </header>
