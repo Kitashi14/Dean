@@ -1,7 +1,6 @@
 <?php
     $rootDir = $_SERVER['DOCUMENT_ROOT'].'/deanproject';
-    $path = $rootDir. '/config.php';
-    include $path;
+    require_once($rootDir . '/config.php');
 
     session_start();
 ?>
@@ -28,6 +27,6 @@
     <header class=" w-full bg-gray-300 py-4 px-4 flex flex-row justify-between space-x-2 ">
         <a class="bg-blue-600 text-white py-1 px-3 ml-5" href="<?php echo rootUrl ?>">Home</a>
         <a class="bg-blue-600 text-white py-1 px-3 mr-3" href="<?php
-                    echo rootUrl , !isset($_SESSION['uid']) ? '/pages/login.php' : '/pages/logout.php';
+                    echo rootUrl , !isset($_SESSION['uid']) ? '/pages/login.php' : '/controllers/logout.php';
                     ?>"><?php echo !isset($_SESSION['uid']) ? 'Log In' : 'Log Out'; ?></a>
     </header>
