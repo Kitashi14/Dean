@@ -1,3 +1,7 @@
+<!-- storing env variables  -->
 <?php
-    define('rootUrl', 'http://localhost/deanproject');
-    ?>
+define('rootUrl', 'http://localhost/deanproject');
+define('DB_HOST', 'localhost');
+define('DB_USER', 'kitashi');
+define('DB_PASS', 'kitashi');
+define('DB_NAME', 'dean_project');
