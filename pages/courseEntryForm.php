@@ -4,9 +4,9 @@
 // importing header component
 include './../inc/header.php';
 
-// redirecting if user is not set or not employee
-if (isset($_SESSION['uid']) && isset($_SESSION['category'])) {
-    if ($_SESSION['category'] != 'employee') {
+// redirecting if user is not set or not employee or if course entry no allowed
+if (isset($_SESSION['uid']) && isset($_SESSION['category']) && isset($_SESSION['isCourseEntryAllowed'])) {
+    if ($_SESSION['category'] != 'employee' || $_SESSION['isCourseEntryAllowed'] == '0') {
         header('Location: ./error.php?error=Page not found');
     }
 } else {
