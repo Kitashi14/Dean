@@ -11,7 +11,9 @@ try {
     if (isset($_GET['error'])) {
         // if present then showing requested error
         $err = $_GET['error'];
-        echo "<h1>$err</h1>";
+        echo '<br>';
+        echo '<br>';
+        echo "<h2>$err</h2>";
     } else {
         
         //if not redirecting to necessary error page

@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
 
-    //checking if form-input are present
+    //checking if all form inputs are present or not
     if (empty($email) || empty($password)) {
 
         //if not present then redirecting to login page

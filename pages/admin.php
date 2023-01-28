@@ -31,12 +31,12 @@ if (isset($_SESSION['uid']) && isset($_SESSION['isAdmin'])) {
         <div class=" w-1/2 mt-4 bg-gray-200 py-10 px-4 flex flex-col justify-evenly items-center">
 
             <div class="bg-gray-200 mt-1 w-1/2 flex flex-col justify-around items-center ">
-                <h2 class="block mb-2 text-m font-bold text-blue-600"> Current Semester : <?php echo $_SESSION['currentSemester'] ?></h2>
+                <h2 class="block mb-2 text-m font-bold text-blue-900"> Current Semester : <?php echo $_SESSION['currentSemester'] ?></h2>
                 <h2 class="block mb-2 text-m font-bold text-<?php echo $_SESSION['isCourseEntryAllowed']? 'green': 'red'; ?>-600" > <?php echo $_SESSION['isCourseEntryAllowed']? 'Course entry allowed': 'Course entry blocked'; ?></h2>
                 <h2 class="block mb-2 text-m font-bold text-<?php echo $_SESSION['isGradeEntryAllowed']? 'green': 'red'; ?>-600" > <?php echo $_SESSION['isGradeEntryAllowed']? 'Grade entry allowed': 'Grade entry blocked'; ?></h2>
 
             </div>
-            <a class="bg-green-600 h-10 text-center flex items-center text-white py-1 px-3 " href="<?php echo rootUrl, '/pages/statusForm.php'; ?>">Change Status</a>
+            <a class="bg-sky-600 h-10 text-center flex items-center text-white py-1 px-3 " href="<?php echo rootUrl, '/pages/statusForm.php'; ?>">Change Status</a>
 
         </div>
     </div>
