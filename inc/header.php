@@ -44,7 +44,7 @@ $_SESSION['isGradeEntryAllowed'] = $status['isGradeEntryAllowed'];
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="relative min-h-screen ">
     <header class=" w-full bg-gray-300 py-4 px-4 flex flex-row justify-between space-x-2 ">
         <a class="bg-blue-600 text-white py-1 px-3 ml-5" href="<?php echo rootUrl ?>">Home</a>
         <div>
@@ -73,3 +73,4 @@ $_SESSION['isGradeEntryAllowed'] = $status['isGradeEntryAllowed'];
             ?>
         </div>
     </header>
+    <div class="pb-8">

@@ -35,7 +35,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['category'])) {
 
             <?php
             //button will be shown only if its allowed
-            echo $_SESSION['isCourseEntryAllowed'] == 1 ? '<a class="bg-sky-600 h-10 text-center flex items-center text-white py-1 px-3 " href="'. rootUrl . '/pages/courseEntryForm.php">Enter Course</a>' : '';
+            echo $_SESSION['isCourseEntryAllowed'] == 1 ? '<a class="bg-sky-600 h-10 text-center flex items-center text-white py-1 px-3 " href="' . rootUrl . '/pages/courseEntryForm.php">Enter Course</a>' : '';
 
             ?>
 
@@ -45,7 +45,13 @@ if (isset($_SESSION['uid']) && isset($_SESSION['category'])) {
             ?>
 
         </div>
+        <br>
+
     </div>
+    <div>
+        <h2>Courses for this semester: </h2>
+    </div>
+
 
 </div>
 

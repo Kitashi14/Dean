@@ -18,8 +18,8 @@ $programs = ['B.Tech', 'M.Tech', 'MCA'];
 ?>
 
 <!-- set status form  -->
-<div class="flex flex-col justify-between p-2  container mx-auto w-1/3 mb-15  mt-4 rounded-lg border ">
-    <form action="<?php echo rootUrl . '/controllers/enterCourse-inc.php' ?>" method="POST" class="px-4 pt-1 pb-2 mb-10 bg-white rounded">
+<div class="flex flex-col justify-between p-2  container mx-auto w-1/3 mb-15  mt-4 mb-4 rounded-lg border ">
+    <form action="<?php echo rootUrl . '/controllers/createCourse-inc.php' ?>" method="POST" class="px-4 pt-1 pb-2  bg-white rounded">
         <div class="flex flex-col justify-around  px-3 space-y-2 items-center">
 
             <div class="w-full space-y-2 ">
@@ -37,7 +37,7 @@ $programs = ['B.Tech', 'M.Tech', 'MCA'];
                 <label for="credit" class="block mb-2 text-sm font-bold text-gray-700">
                     Credit
                 </label>
-                <input id="credit" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="text" name="credit" placeholder="Enter credit for the course" required>
+                <input id="credit" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" min="0" max="4" name="credit" placeholder="Enter credit for the course" required>
                 <br>
                 <label for="program" class="block mt-2 mb-2 text-sm font-bold text-gray-700">
                     Select Program
@@ -67,13 +67,13 @@ $programs = ['B.Tech', 'M.Tech', 'MCA'];
                 <label for="midSem" class="block mb-2 text-sm font-bold text-gray-700">
                     Max. marks for mid sem
                 </label>
-                <span class="text-xs text-red-500"><i># leave it empty if practical course</i></span>
+                <span class="text-xs text-red-500"><i>* leave it empty if practical course</i></span>
                 <input id="midSem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="midSem" min="0" max="100" placeholder="Enter midsem marks">
                 <label for="endSem" class="block mb-2 text-sm font-bold text-gray-700">
                     Max. marks for end sem
                 </label>
 
-                <input id="endSem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="courseCode" min="0" max="100" placeholder="Enter endsem marks" required>
+                <input id="endSem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="endSem" min="0" max="100" placeholder="Enter endsem marks" required>
             </div>
 
             <div class="mb-3 w-1/3 bg-red-400">
