@@ -1,7 +1,7 @@
 <!-- set status form page  -->
 <?php
 
-// importing div component
+// importing header component
 include './../inc/header.php';
 
 // redirecting if user is not set or not admin
@@ -22,10 +22,10 @@ if (isset($_SESSION['uid']) && isset($_SESSION['isAdmin'])) {
         <div class="flex flex-col justify-around  p-3 space-y-4 items-center">
 
             <div class="w-full space-y-1">
-                <label for="email" class="block mb-2 text-sm font-bold text-center text-gray-700">
+                <label for="semester" class="block mb-2 text-sm font-bold text-center text-gray-700">
                     Semester
                 </label>
-                <input id="email" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="currentSemester" min="1" max="8" placeholder="Enter current semester" required>
+                <input id="semester" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="currentSemester" min="1" max="8" placeholder="Enter current semester" required>
             </div>
             <br>
             <div class="w-full flex flex-row justify-between">

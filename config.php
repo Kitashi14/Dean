@@ -1,5 +1,5 @@
-<!-- storing env variables  -->
 <?php
+//storing env variables
 define('rootUrl', 'http://localhost/deanproject');
 define('DB_HOST', 'localhost');
 define('DB_USER', 'kitashi');
