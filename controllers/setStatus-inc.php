@@ -13,10 +13,11 @@ if (isset($_POST['submit'])) {
     require_once($rootDir . '/database.php');
 
     //extracting form-input of POST request
-    $setCurrentSemester = filter_input(INPUT_POST, 'currentSemester', FILTER_SANITIZE_NUMBER_INT);
-    $setCourseEntryStatus = filter_input(INPUT_POST, 'isCourseEntryAllowed', FILTER_SANITIZE_SPECIAL_CHARS);
-    $setGradeEntryStatus = filter_input(INPUT_POST, 'isGradeEntryAllowed', FILTER_SANITIZE_SPECIAL_CHARS);
+    $setCurrentSemester = htmlspecialchars($_POST['currentSemester']);
+    $setCourseEntryStatus = $_POST['isCourseEntryAllowed'];
+    $setGradeEntryStatus =  $_POST['isGradeEntryAllowed'];
 
+    $setCurrentSemester = (int)$setCurrentSemester;
     //checking if all form inputs are present or not
     if (empty($setCourseEntryStatus) || empty($setCurrentSemester) || empty($setGradeEntryStatus)) {
         //if not present then redirecting to form page
@@ -35,7 +36,7 @@ if (isset($_POST['submit'])) {
         //storing values in variables for easy usage
         $user_id = $_SESSION['uid'];
         $setCourseEntryStatus = $setCourseEntryStatus == 'yes' ? 1 : 0;
-        $setGradeEntryStatus = $setGradeEntryStatus=='yes'? 1: 0;
+        $setGradeEntryStatus = $setGradeEntryStatus == 'yes' ? 1 : 0;
 
 
         //sql for inserting status as per provided details
