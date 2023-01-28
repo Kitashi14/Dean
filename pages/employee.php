@@ -4,6 +4,7 @@
 // importing header component
 include './../inc/header.php';
 
+
 // redirecting if user is not set or not employee
 if (isset($_SESSION['uid']) && isset($_SESSION['category'])) {
     if ($_SESSION['category'] != 'employee') {
@@ -12,6 +13,20 @@ if (isset($_SESSION['uid']) && isset($_SESSION['category'])) {
 } else {
     header('Location: ./error.php?error=Page not found');
 }
+
+$eid = $_SESSION['eid'];
+$currentSemester = $_SESSION['currentSemester'];
+
+//fetching employee courses from db for current semester
+$sql = "SELECT * FROM course WHERE employee_id = '$eid' AND semester = '$currentSemester'";
+$result = mysqli_query($conn, $sql);
+$employeeCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+$employeeCoursesId= array_map(function($course){
+    return $course['id'];
+},$employeeCourses);
+
+$_SESSION['employeeCoursesId'] = $employeeCoursesId;
 
 ?>
 
@@ -39,17 +54,50 @@ if (isset($_SESSION['uid']) && isset($_SESSION['category'])) {
 
             ?>
 
-            <?php
-            // echo $_SESSION['isGradeEntryAllowed'] == 1 ? '<a class="bg-sky-600 h-10 text-center flex items-center text-white py-1 px-3 " href="'. rootUrl . '/pages/gradeEntryForm.php">Enter Grade </a>' : '';
-
-            ?>
-
         </div>
         <br>
 
     </div>
-    <div>
-        <h2>Courses for this semester: </h2>
+
+    <!-- course details of current semester  -->
+    <div class="p-0 mt-5">
+        <h2 class="text-xl font-normal text-sky-700 px-3">Courses for this semester: </h2>
+        <table class="w-full text-center mt-3 ">
+            <thead class="bg-sky-500 py-4">
+                <tr>
+                    <th class="py-2">Name</th>
+                    <th class="py-2">Code</th>
+                    <th class="py-2">Credit</th>
+                    <th class="py-2">Program</th>
+                    <th class="py-2">Type</th>
+                    <th class="py-2">Internal Marks</th>
+                    <th class="py-2">Mid Sem Marks</th>
+                    <th class="py-2">End Sem Marks</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php
+                $isEmpty = false;
+
+                if (empty($employeeCourses)) {
+                    $isEmpty = true;
+                } else {
+                    array_map(function ($course) {
+                        echo '<tr class="bg-white p-0 odd:bg-sky-200"><td>', $course['courseName'], '</td><td>', $course['courseCode'], '</td><td>', $course['credit'], '</td><td>', $course['program'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['internal'], '</td><td>', $course['midsem'] == '0' ? '--' : $course['midsem'], '</td><td>', $course['endsem'], '</td>', $_SESSION['isGradeEntryAllowed'] ? '<td class="py-1 bg-white px-2"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntry.php?course_id=' . $course['id'] . '">Enter Grade</a></td>' : '', '</tr>';
+                    }, $employeeCourses);
+                }
+
+
+                ?>
+            </tbody>
+
+
+        </table>
+        <?php
+        echo $isEmpty ? '<h3 class="my-4 bg-sky-200 py-2 text-center">No Courses added yet</h3>' : '';
+        ?>
+
     </div>
 
 
