@@ -11,7 +11,7 @@ session_start();
 require_once($rootDir . '/database.php');
 
 
-//fetching current status of the site
+//fetching current status of the site so that at every reload of any page it fetches latest status
 $sql = 'SELECT * FROM status ORDER BY id DESC LIMIT 1';
 $result = mysqli_query($conn, $sql);
 $status = mysqli_fetch_all($result, MYSQLI_ASSOC)[0];

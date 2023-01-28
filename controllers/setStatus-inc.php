@@ -23,21 +23,25 @@ if (isset($_POST['submit'])) {
         echo '<script>alert("Status details not found");';
         echo 'window.location= "./../pages/statusForm.php"; </script>';
     } else {
+
+        //checking semester value is in range or not
         if ($setCurrentSemester > 8 || $setCurrentSemester < 1) {
 
-            //for invalid enty redirecting to form page
+            //for invalid entry redirecting to form page
             echo '<script>alert("Invalid semester");';
             echo 'window.location= "./../pages/statusForm.php"; </script>';
         }
 
+        //storing values in variables for easy usage
         $user_id = $_SESSION['uid'];
         $setCourseEntryStatus = $setCourseEntryStatus == 'yes' ? 1 : 0;
         $setGradeEntryStatus = $setGradeEntryStatus=='yes'? 1: 0;
 
 
-        //insert status as per provided details
-        $sql = "INSER INTO status (id, user_id, currentSemester, isCourseEntryAllowed, isGradeEntryAllowed, createdAt) VALUES (NULL, '$user_id', '$setCurrentSemester', '$setCourseEntryStatus', '$setGradeEntryStatus', current_timestamp())";
+        //sql for inserting status as per provided details
+        $sql = "INSERT INTO status (id, user_id, currentSemester, isCourseEntryAllowed, isGradeEntryAllowed, createdAt) VALUES (NULL, '$user_id', '$setCurrentSemester', '$setCourseEntryStatus', '$setGradeEntryStatus', current_timestamp())";
 
+        //inserting to database
         if (mysqli_query($conn, $sql)) {
             // success
             header('Location: ./../pages/admin.php');
