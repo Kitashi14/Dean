@@ -73,4 +73,4 @@ $_SESSION['isGradeEntryAllowed'] = $status['isGradeEntryAllowed'];
             ?>
         </div>
     </header>
-    <div class="pb-8">
+    <div class="pb-16">

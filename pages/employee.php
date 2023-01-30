@@ -84,7 +84,7 @@ $_SESSION['employeeCoursesId'] = $employeeCoursesId;
                     $isEmpty = true;
                 } else {
                     array_map(function ($course) {
-                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $course['courseName'], '</td><td>', $course['courseCode'], '</td><td>', $course['credit'], '</td><td>', $course['program'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['internal'], '</td><td>', $course['isTheory'] == 0 ? '--' : $course['midsem'], '</td><td>', $course['endsem'], '</td>', $_SESSION['isGradeEntryAllowed'] ? '<td class="py-1 bg-white px-2"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/course.php?course_id=' . $course['id'] . '">Enter Grade</a></td>' : '', '</tr>';
+                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $course['courseName'], '</td><td>', $course['courseCode'], '</td><td>', $course['credit'], '</td><td>', $course['program'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['internal'], '</td><td>', $course['isTheory'] == 0 ? '--' : $course['midsem'], '</td><td>', $course['endsem'], '</td>','<td class="py-1 bg-white px-2"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/course.php?course_id=' . $course['id'] . '">Open</a></td>','</tr>';
                     }, $employeeCourses); 
                 }
 

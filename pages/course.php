@@ -38,7 +38,6 @@ if (!in_array($pageCourseId, $employeeCoursesId)) {
 $sql = "SELECT * FROM course WHERE id = '$pageCourseId'";
 $result = mysqli_query($conn, $sql);
 $courseDetails = mysqli_fetch_all($result, MYSQLI_ASSOC)[0];
-print_r($courseDetails);
 echo  '<br>';
 
 
@@ -54,7 +53,6 @@ $sql = "SELECT * FROM student s, $gradeTable g WHERE s.regNo = g.regNo AND g.cou
 
 $result = mysqli_query($conn, $sql);
 $studentsAlreadyGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
-print_r($studentsAlreadyGraded);
 
 echo '<br>';
 
@@ -64,7 +62,6 @@ $sql = "SELECT * FROM student S WHERE S.regNo NOT IN (SELECT s.regNo FROM studen
 
 $result = mysqli_query($conn, $sql);
 $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
-print_r($studentsNotGraded);
 
 ?>
 
@@ -121,8 +118,8 @@ print_r($studentsNotGraded);
                     <th class="py-2">Name</th>
                     <th class="py-2">Reg No</th>
                     <th class="py-2">Internal Marks</th>
-                    <?php echo $courseDetails['isTheory']==
-                    '1' ? '<th class="py-2">Mid Sem Marks</th>' : ''; ?>
+                    <?php echo $courseDetails['isTheory'] ==
+                        '1' ? '<th class="py-2">Mid Sem Marks</th>' : ''; ?>
 
                     <th class="py-2">End Sem Marks</th>
                     <th class="py-2">Grade</th>
@@ -139,7 +136,7 @@ print_r($studentsNotGraded);
                     array_map(function ($student) {
                         global $courseDetails;
 
-                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $student['name'], '</td><td>', $student['regNo'], '</td><td>', $student['internal'], '</td>', $courseDetails['isTheory'] == '1' ? '<td>'. $student['midsem'] .'</td>' : '', '<td>', $student['endsem'], '</td><td>', $student['grade'], '</td><td class="py-1 bg-white px-2 w-1/6"><a id="', $student['regNo'], '" class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Change Grade</a></td></tr>';
+                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $student['name'], '</td><td>', $student['regNo'], '</td><td>', $student['internal'], '</td>', $courseDetails['isTheory'] == '1' ? '<td>' . $student['midsem'] . '</td>' : '', '<td>', $student['endsem'], '</td><td>', $student['grade'], '</td>', $_SESSION['isGradeEntryAllowed'] == '1' ? '<td class="py-1 bg-white px-2 w-1/6"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Change Grade</a></td>' : '', '</tr>';
                     }, $studentsAlreadyGraded);
                 }
 
@@ -178,7 +175,7 @@ print_r($studentsNotGraded);
                     } else {
                         array_map(function ($student) {
                             global $pageCourseId;
-                            echo '<tr class="bg-red-100 p-0 odd:bg-red-300 my-5"><td class="py-2">', $student['name'], '</td><td>', $student['regNo'], '</td><td class="py-1 bg-white px-2 w-1/4"><a id="', $student['regNo'], '" class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $pageCourseId . '&regNo=' . $student['regNo'] . '">Enter Grade</a></td></tr>';
+                            echo '<tr class="bg-red-100 p-0 odd:bg-red-300 my-5"><td class="py-2">', $student['name'], '</td><td>', $student['regNo'], '</td>', $_SESSION['isGradeEntryAllowed'] == '1' ? '<td class="py-1 bg-white px-2 w-1/4"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $pageCourseId . '&regNo=' . $student['regNo'] . '">Enter Grade</a></td>' : '', '</tr>';
                         }, $studentsNotGraded);
                     }
 

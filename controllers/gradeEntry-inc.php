@@ -56,7 +56,6 @@ if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SES
             $gradeTable = $courseDetails['isTheory'] == '1' ? 'theorygrade' : 'practicalgrade';
             $courseType = $courseDetails['isTheory'] == '1' ? 'Theory' : 'Practical';
         }
-        echo "sfsdfsd";
 
         //fetching student details
         $sql = "SELECT * FROM student WHERE regNo = '$requestedRegNo'";
@@ -90,40 +89,101 @@ if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SES
 
         //calculating grade
         $total_marks = $internal + $midSem + $endSem;
-        if($_POST['submit']=='Absent'){$grade='Ab';}
-        else if($total_marks >= 85){$grade='A+';}
-        else if($total_marks>=75){$grade='A';}
-        else if($total_marks>=65){$grade='B+';}
-        else if($total_marks>=55){$grade='B';}
-        else if($total_marks>=45){$grade='C';}
-        else if($total_marks>=30){$grade='D';}
-        else if($total_marks>=25){$grade='E';}
+        if ($_POST['submit'] == 'Absent') {
+            $grade = 'Ab';
+        } else if ($total_marks >= 85) {
+            $grade = 'A+';
+        } else if ($total_marks >= 75) {
+            $grade = 'A';
+        } else if ($total_marks >= 65) {
+            $grade = 'B+';
+        } else if ($total_marks >= 55) {
+            $grade = 'B';
+        } else if ($total_marks >= 45) {
+            $grade = 'C';
+        } else if ($total_marks >= 30) {
+            $grade = 'D';
+        } else if ($total_marks >= 25) {
+            $grade = 'E';
+        }
+
+        // for absent student all marks
+        $internal = $grade == 'Ab' ? 0 : $internal;
+        $midSem = $grade == 'Ab' ? 0 : $midSem;
+        $endSem = $grade == 'Ab' ? 0 : $endSem;
 
         //database request 
-        if($formType=='Enter'){
+        if ($formType == 'Enter') {
+
             //create operation
-            if($courseType=='Theory'){
+            if ($courseType == 'Theory') {
                 //for theory course
-                //sql for inserting course
+
+                //sql for inserting theory grade
                 $sql = "INSERT INTO theoryGrade (id, regNo, course_id, internal, midsem, endsem, grade,createdAt) VALUES (NULL, '$requestedRegNo', '$requestedCourseId', '$internal', '$midSem', '$endSem', '$grade', current_timestamp())";
 
                 //inserting to database
                 if (mysqli_query($conn, $sql)) {
                     // success
-                    header('Location: ./../pages/employee.php');
+                    echo '<script>';
+                    echo 'window.location= "', rootUrl, '/pages/course.php?course_id=', $_POST['course_id'], '"; </script>';
                 } else {
                     // error
                     header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
                 }
-            }else{
+            } else {
                 //for practical course
+
+                //sql for inserting practical grade
+                $sql = "INSERT INTO practicalGrade (id, regNo, course_id, internal, endsem, grade,createdAt) VALUES (NULL, '$requestedRegNo', '$requestedCourseId', '$internal', '$endSem', '$grade', current_timestamp())";
+
+                //inserting to database
+                if (mysqli_query($conn, $sql)) {
+                    // success
+                    echo '<script>';
+                    echo 'window.location= "', rootUrl, '/pages/course.php?course_id=', $_POST['course_id'], '"; </script>';
+                } else {
+                    // error
+                    header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
+                }
             }
+        } else {
 
-        }else {
+            $gradeId = $gradeDetails[0]['id'];
+
             //update operation
+            if ($courseType == 'Theory') {
+                //for theory course
 
+                //sql for updating theory grade
+                $sql = "UPDATE theoryGrade SET internal= '$internal' , midsem = '$midSem', endsem = '$endSem' , grade = '$grade' WHERE id='$gradeId'";
+
+                //inserting to database
+                if (mysqli_query($conn, $sql)) {
+                    // success
+                    echo '<script>';
+                    echo 'window.location= "', rootUrl, '/pages/course.php?course_id=', $_POST['course_id'], '"; </script>';
+                } else {
+                    // error
+                    header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
+                }
+            } else {
+                //for practical course
+
+                //sql for updating practical grade
+                $sql = "UPDATE practicalGrade SET internal= '$internal' , endsem = '$endSem' , grade = '$grade' WHERE id='$gradeId'";
+
+                //inserting to database
+                if (mysqli_query($conn, $sql)) {
+                    // success
+                    echo '<script>';
+                    echo 'window.location= "', rootUrl, '/pages/course.php?course_id=', $_POST['course_id'], '"; </script>';
+                } else {
+                    // error
+                    header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
+                }
+            }
         }
-
     }
 } else {
     // handling directing access of this file 

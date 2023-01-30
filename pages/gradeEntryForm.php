@@ -91,7 +91,7 @@ $formType = empty($gradeDetails) ? 'Enter' : 'Update';
         <div class="flex flex-col justify-around   p-3 space-y-4 items-center">
 
             <div class="block text-xl font-bold text-orange-500">
-                Grade <?php echo $formType; ?> Form
+                <?php echo $formType; ?> Grade Form
             </div>
             <hr class="h-0.5 bg-orange-500 mx-4 w-full">
             <div class="block text-m font-bold text-sky-600">

@@ -14,7 +14,7 @@ try {
         echo '<title>404 Not Found</title>
         </head><body>
         <h1>',$err,'</h1>
-        <p>', isset($_GET['message']) ? $_GET['message'] : 'The requested URL was not found on this server.','</p>
+        <p>', isset($_GET['message']) ? $_GET['message'] : '','</p>
         <hr>';
     } else {
 
