@@ -16,7 +16,7 @@ try {
 
 // redirecting if user is not set or not employee 
 if (isset($_SESSION['uid']) && isset($_SESSION['category'])) {
-    if ($_SESSION['category'] != 'employee' ) {
+    if ($_SESSION['category'] != 'employee') {
         header('Location: ./error.php?error=Page not found');
     }
 } else {
@@ -87,7 +87,7 @@ print_r($studentsNotGraded);
                     <tr>
                         <th class="py-2">Internals</th>
                         <?php
-                        echo $courseDetails['isTheory'] ? '<th class="py-2">Mid Sem</th>' : '';
+                        echo $courseDetails['isTheory'] == '1' ? '<th class="py-2">Mid Sem</th>' : '';
                         ?>
                         <th class="py-2">End Sem</th>
 
@@ -121,9 +121,11 @@ print_r($studentsNotGraded);
                     <th class="py-2">Name</th>
                     <th class="py-2">Reg No</th>
                     <th class="py-2">Internal Marks</th>
-                    <?php echo $courseDetails['isTheory'] ? '<th class="py-2">Mid Sem Marks</th>' : ''; ?>
+                    <?php echo $courseDetails['isTheory']==
+                    '1' ? '<th class="py-2">Mid Sem Marks</th>' : ''; ?>
 
                     <th class="py-2">End Sem Marks</th>
+                    <th class="py-2">Grade</th>
                 </tr>
             </thead>
 
@@ -134,9 +136,11 @@ print_r($studentsNotGraded);
                 if (empty($studentsAlreadyGraded)) {
                     $isEmpty = true;
                 } else {
-                    array_map(function ($course) {
-                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $course['courseName'], '</td><td>', $course['courseCode'], '</td><td>', $course['credit'], '</td><td>', $course['program'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['internal'], '</td><td>', $course['midsem'] == '0' ? '--' : $course['midsem'], '</td><td>', $course['endsem'], '</td>', $_SESSION['isGradeEntryAllowed'] ? '<td class="py-1 bg-white px-2"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntry.php?course_id=' . $course['id'] . '">Enter Grade</a></td>' : '', '</tr>';
-                    }, $employeeCourses);
+                    array_map(function ($student) {
+                        global $courseDetails;
+
+                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $student['name'], '</td><td>', $student['regNo'], '</td><td>', $student['internal'], '</td>', $courseDetails['isTheory'] == '1' ? '<td>'. $student['midsem'] .'</td>' : '', '<td>', $student['endsem'], '</td><td>', $student['grade'], '</td><td class="py-1 bg-white px-2 w-1/6"><a id="', $student['regNo'], '" class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Change Grade</a></td></tr>';
+                    }, $studentsAlreadyGraded);
                 }
 
 
@@ -174,7 +178,7 @@ print_r($studentsNotGraded);
                     } else {
                         array_map(function ($student) {
                             global $pageCourseId;
-                            echo '<tr class="bg-red-100 p-0 odd:bg-red-300 my-5"><td class="py-2">', $student['name'], '</td><td>', $student['regNo'], '</td><td class="py-1 bg-white px-2 w-1/4"><a id="',$student['regNo'],'" class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $pageCourseId .'&regNo='.$student['regNo'].'"onClick="gradeSubmit(this)">Enter Grade</a></td></tr>';
+                            echo '<tr class="bg-red-100 p-0 odd:bg-red-300 my-5"><td class="py-2">', $student['name'], '</td><td>', $student['regNo'], '</td><td class="py-1 bg-white px-2 w-1/4"><a id="', $student['regNo'], '" class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $pageCourseId . '&regNo=' . $student['regNo'] . '">Enter Grade</a></td></tr>';
                         }, $studentsNotGraded);
                     }
 
@@ -185,8 +189,8 @@ print_r($studentsNotGraded);
 
             </table>
             <?php
-        echo $isEmpty ? '<h3 class=" w-1/2 bg-red-200 py-2 text-center">No students left for grading</h3>' : '';
-        ?>
+            echo $isEmpty ? '<h3 class=" w-1/2 bg-red-200 py-2 text-center">No students left for grading</h3>' : '';
+            ?>
         </div>
     </div>
 </div>
