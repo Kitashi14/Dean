@@ -8,7 +8,7 @@ require_once($rootDir . '/config.php');
 session_start();
 
 // handling login POST request
-if (isset($_POST['submit'])) {
+if (isset($_POST['submit']) && isset($_SESSION['isCourseEntryAllowed']) && ($_SESSION['isCourseEntryAllowed']== '1')) {
     //connecting to database
     require_once($rootDir . '/database.php');
 
@@ -29,6 +29,7 @@ if (isset($_POST['submit'])) {
         echo 'window.location= "./../pages/courseEntryForm.php"; </script>';
     } else {
 
+        //change to integer from string
         $internal = (int)$internal;
         $midSem = (int)$midSem;
         $endSem = (int)$endSem;

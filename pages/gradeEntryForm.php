@@ -87,11 +87,13 @@ $formType = empty($gradeDetails) ? 'Enter' : 'Update';
 
         <input type="text" style="display: none;" name="regNo" value="<?php echo $studentDetails['regNo']; ?>">
 
-        <input type="text" style="display: none;" name="regNo" value="<?php echo $studentDetails['regNo']; ?>">
-
 
         <div class="flex flex-col justify-around   p-3 space-y-4 items-center">
 
+            <div class="block text-xl font-bold text-orange-500">
+                Grade <?php echo $formType; ?> Form
+            </div>
+            <hr class="h-0.5 bg-orange-500 mx-4 w-full">
             <div class="block text-m font-bold text-sky-600">
                 <?php echo ucwords($studentDetails['name']), ' (', $requestedRegNo, ')'; ?>
             </div>
@@ -99,27 +101,34 @@ $formType = empty($gradeDetails) ? 'Enter' : 'Update';
                 Course : <?php echo ucwords($courseDetails['courseName']), ' (', $courseDetails['courseCode'], ')'; ?>
             </div>
 
+            <div class="mb-3 w-1/3 flex flex-col items-center text-red-600">
+                (if absent)
+                <input type="submit" class="w-full h-8 bg-orange-600 rounded-lg hover:bg-orange-800  text-white " name="submit" value="Absent">
+
+            </div>
 
             <div class="w-full space-y-1">
                 <label for="internal" class="block mb-2 text-sm font-bold text-gray-700">
                     Internal marks :
                 </label>
-                <input id="internal" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="internal" min="0" max="<?php echo $courseDetails['internal'] ?>" placeholder="Enter internal marks" required>
+                <input id="internal" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="internal" value="0" min="0" max="<?php echo $courseDetails['internal'] ?>" placeholder="Enter internal marks" required>
             </div>
 
             <div class="w-full space-y-1" <?php echo  $courseDetails['isTheory'] == '0' ? 'style="display: none;"' : '' ?>>
                 <label for="midsem" class="block mb-2 text-sm font-bold text-gray-700">
                     Midsem marks :
                 </label>
-                <input id="midsem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="midesem" min="0" max="<?php echo $courseDetails['midsem'] ?>" placeholder="Enter midsem marks" value="0" required>
+                <input id="midsem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="midSem" min="0" max="<?php echo $courseDetails['midsem'] ?>" placeholder="Enter midsem marks" value="0" required>
             </div>
 
             <div class="w-full space-y-1">
                 <label for="endsem" class="block mb-2 text-sm font-bold text-gray-700">
                     Endsem marks :
                 </label>
-                <input id="endsem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="endsem" min="0" max="<?php echo $courseDetails['endsem'] ?>" placeholder="Enter endsem marks" required>
+                <input id="endsem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="endSem" value="0" min="0" max="<?php echo $courseDetails['endsem'] ?>" placeholder="Enter endsem marks" required>
             </div>
+
+
 
 
 

@@ -1,15 +1,14 @@
 <!-- home page  -->
-<?php 
+<?php
 
-    //importing header component
-    include './inc/header.php';
+//importing header component
+include './inc/header.php';
 
-    echo isset($_SESSION['uid'])? $_SESSION['uid'] : '';
+echo isset($_SESSION['uid']) ? $_SESSION['uid'] : '';
 ?>
-    This is home page
+This is home page
 
 <?php
 
-    //importing footer component
-    include './inc/footer.php';
-
+//importing footer component
+include './inc/footer.php';
