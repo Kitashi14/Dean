@@ -11,11 +11,13 @@ try {
     if (isset($_GET['error'])) {
         // if present then showing requested error
         $err = $_GET['error'];
-        echo '<br>';
-        echo '<br>';
-        echo "<h2>$err</h2>";
+        echo '<title>404 Not Found</title>
+        </head><body>
+        <h1>',$err,'</h1>
+        <p>', isset($_GET['message']) ? $_GET['message'] : 'The requested URL was not found on this server.','</p>
+        <hr>';
     } else {
-        
+
         //if not redirecting to necessary error page
         header('Location: ./error.php?error=Page not found');
     }

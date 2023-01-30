@@ -18,8 +18,8 @@ $programs = ['B.Tech', 'M.Tech', 'MCA'];
 ?>
 
 <!-- set status form  -->
-<div class="flex flex-col justify-between p-2  container mx-auto w-1/3 mb-15  mt-4 mb-4 rounded-lg border ">
-    <form action="<?php echo rootUrl . '/controllers/createCourse-inc.php' ?>" method="POST" class="px-4 pt-1 pb-2  bg-white rounded">
+<div class="flex flex-col justify-between p-2 bg-orange-200  container mx-auto w-1/3 mb-15  mt-4 mb-4 rounded-lg border ">
+    <form action="<?php echo rootUrl . '/controllers/createCourse-inc.php' ?>" method="POST" class="px-4 pt-1 pb-2 mb-0 bg-white rounded">
         <div class="flex flex-col justify-around  px-3 space-y-2 items-center">
 
             <div class="w-full space-y-2 ">
