@@ -25,7 +25,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['isAdmin'])) {
                 <label for="semester" class="block mb-2 text-sm font-bold text-center text-gray-700">
                     Semester
                 </label>
-                <input id="semester" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="currentSemester" min="1" max="8" placeholder="Enter current semester" required>
+                <input id="semester" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="currentSemester" min="1" max="8" value="<?php echo $_SESSION['currentSemester'] ?>" placeholder="Enter current semester" required>
             </div>
             <br>
             <div class="w-full flex flex-row justify-between">

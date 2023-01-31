@@ -1,3 +1,4 @@
+<!-- grade entry controller  -->
 <?php
 
 //importing env var
@@ -158,7 +159,7 @@ if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SES
                 //sql for updating theory grade
                 $sql = "UPDATE theoryGrade SET internal= '$internal' , midsem = '$midSem', endsem = '$endSem' , grade = '$grade' WHERE id='$gradeId'";
 
-                //inserting to database
+                //updating data
                 if (mysqli_query($conn, $sql)) {
                     // success
                     echo '<script>';
@@ -173,7 +174,7 @@ if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SES
                 //sql for updating practical grade
                 $sql = "UPDATE practicalGrade SET internal= '$internal' , endsem = '$endSem' , grade = '$grade' WHERE id='$gradeId'";
 
-                //inserting to database
+                //updating data
                 if (mysqli_query($conn, $sql)) {
                     // success
                     echo '<script>';
@@ -185,7 +186,4 @@ if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SES
             }
         }
     }
-} else {
-    // handling directing access of this file 
-    header('Location: ./../pages/error.php?error=Page not found');
 }

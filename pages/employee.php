@@ -22,9 +22,9 @@ $sql = "SELECT * FROM course WHERE employee_id = '$eid' AND semester = '$current
 $result = mysqli_query($conn, $sql);
 $employeeCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$employeeCoursesId= array_map(function($course){
+$employeeCoursesId = array_map(function ($course) {
     return $course['id'];
-},$employeeCourses);
+}, $employeeCourses);
 
 $_SESSION['employeeCoursesId'] = $employeeCoursesId;
 
@@ -44,7 +44,9 @@ $_SESSION['employeeCoursesId'] = $employeeCoursesId;
         <!--course entry button for employee  -->
         <div class=" w-1/2 mt-4 bg-gray-200 py-10 px-4 flex flex-col justify-evenly items-center">
             <div class="bg-gray-200 mt-1 w-1/2 flex flex-col justify-around items-center ">
-                <h2 class="block mb-2 text-m font-bold text-blue-900"> Current Semester : <?php echo $_SESSION['currentSemester'] ?></h2>
+                <h2 class="block mb-2 text-lg font-bold text-blue-900"> Current Semester : <?php echo $_SESSION['currentSemester'] ?></h2>
+                <h2 class="block mb-2 text-xl font-bold text-red-600" <?php echo ($_SESSION['isGradeEntryAllowed'] == '1') ? '' : 'style="display: none;"' ?>> Grade submission going on!</h2>
+                <h2 class="block mb-2 text-xl font-bold text-red-600" <?php echo ($_SESSION['isCourseEntryAllowed'] == '1') ? '' : 'style="display: none;"' ?>> Course Entry going on!</h2>
 
             </div>
 
@@ -62,7 +64,7 @@ $_SESSION['employeeCoursesId'] = $employeeCoursesId;
     <!-- course details of current semester  -->
     <div class="p-0 mt-5">
         <h2 class="text-xl font-normal text-sky-700 px-3">Courses for this semester: </h2>
-        <table class="w-full text-center mt-3 ">
+        <table class="w-full text-center mt-3 mx-1">
             <thead class="bg-sky-600 py-4">
                 <tr>
                     <th class="py-2">Name</th>
@@ -84,8 +86,11 @@ $_SESSION['employeeCoursesId'] = $employeeCoursesId;
                     $isEmpty = true;
                 } else {
                     array_map(function ($course) {
-                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $course['courseName'], '</td><td>', $course['courseCode'], '</td><td>', $course['credit'], '</td><td>', $course['program'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['internal'], '</td><td>', $course['isTheory'] == 0 ? '--' : $course['midsem'], '</td><td>', $course['endsem'], '</td>','<td class="py-1 bg-white px-2"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/course.php?course_id=' . $course['id'] . '">Open</a></td>','</tr>';
-                    }, $employeeCourses); 
+                        $buttonColor = $course['isSubmitted'] == '1' ? 'orange' : 'green';
+                        $buttonText = $course['isSubmitted'] == '1' ? 'Submitted' : 'Open';
+
+                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $course['courseName'], '</td><td>', $course['courseCode'], '</td><td>', $course['credit'], '</td><td>', $course['program'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['internal'], '</td><td>', $course['isTheory'] == 0 ? '--' : $course['midsem'], '</td><td>', $course['endsem'], '</td>', '<td class="py-1 bg-white px-2"><a class=" w-full bg-' . $buttonColor . '-600 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/course.php?course_id=' . $course['id'] . '">' . $buttonText . '</a></td>', '</tr>';
+                    }, $employeeCourses);
                 }
 
 

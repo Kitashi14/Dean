@@ -13,9 +13,16 @@ if (isset($_SESSION['uid']) && isset($_SESSION['isAdmin'])) {
     header('Location: ./error.php?error=Page not found');
 }
 
+$currentSemester = $_SESSION['currentSemester'];
+
+//fetching employee who have not submitted their courses yet
+$sql = "SELECT e.name, c.id, c.employee_id, c.courseName, c.program , c.isTheory FROM course c, employee e WHERE c.isSubmitted='0' AND c.semester = '$currentSemester' AND e.id=c.employee_id";
+$result = mysqli_query($conn, $sql);
+$notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 ?>
 <div>
+
     <div class="flex justify-center items-center w-full h-10 text-4xl font-medium">Admin Page</div>
     <div class="h-1/3 flex flex-row">
 
@@ -32,13 +39,51 @@ if (isset($_SESSION['uid']) && isset($_SESSION['isAdmin'])) {
 
             <div class="bg-gray-200 mt-1 w-1/2 flex flex-col justify-around items-center ">
                 <h2 class="block mb-2 text-m font-bold text-blue-900"> Current Semester : <?php echo $_SESSION['currentSemester'] ?></h2>
-                <h2 class="block mb-2 text-m font-bold text-<?php echo $_SESSION['isCourseEntryAllowed']? 'green': 'red'; ?>-600" > <?php echo $_SESSION['isCourseEntryAllowed']? 'Course entry allowed': 'Course entry blocked'; ?></h2>
-                <h2 class="block mb-2 text-m font-bold text-<?php echo $_SESSION['isGradeEntryAllowed']? 'green': 'red'; ?>-600" > <?php echo $_SESSION['isGradeEntryAllowed']? 'Grade entry allowed': 'Grade entry blocked'; ?></h2>
+                <h2 class="block mb-2 text-m font-bold text-<?php echo $_SESSION['isCourseEntryAllowed'] ? 'green' : 'red'; ?>-600"> <?php echo $_SESSION['isCourseEntryAllowed'] ? 'Course entry allowed' : 'Course entry blocked'; ?></h2>
+                <h2 class="block mb-2 text-m font-bold text-<?php echo $_SESSION['isGradeEntryAllowed'] ? 'green' : 'red'; ?>-600"> <?php echo $_SESSION['isGradeEntryAllowed'] ? 'Grade entry allowed' : 'Grade entry blocked'; ?></h2>
 
             </div>
             <a class="bg-sky-600 h-10 text-center flex items-center text-white py-1 px-3 " href="<?php echo rootUrl, '/pages/statusForm.php'; ?>">Change Status</a>
 
         </div>
+    </div>
+    <!-- courses not submitted yet  -->
+    <div class="px-5 mt-5" <?php echo ($_SESSION['isGradeEntryAllowed'] == '0') ? 'style="display: none;"' : '' ?>>
+        <h2 class="text-xl font-normal text-sky-700 px-3">Courses with grade submission: </h2>
+        <table class="w-full text-center mt-3 ">
+            <thead class="bg-sky-600 py-4">
+                <tr>
+                    <th class="py-2">Course ID</th>
+                    <th class="py-2">Course Name</th>
+                    <th class="py-2">Program</th>
+                    <th class="py-2">Employee Name</th>
+                    <th class="py-2">Employee Id</th>
+                    <th class="py-2">Type</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php
+                $isEmpty = false;
+
+                if (empty($notSubmittedCourses)) {
+                    $isEmpty = true;
+                } else {
+                    array_map(function ($course) {
+                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $course['id'], '</td><td>', $course['courseName'], '</td><td>', $course['program'], '</td><td>', $course['name'], '</td><td>', $course['employee_id'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td>', '</tr>';
+                    }, $notSubmittedCourses);
+                }
+
+
+                ?>
+            </tbody>
+
+
+        </table>
+        <?php
+        echo $isEmpty ? '<h3 class="my-4 bg-sky-200 py-2 text-center">No Courses added yet</h3>' : '';
+        ?>
+
     </div>
 </div>
 
