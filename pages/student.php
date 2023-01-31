@@ -13,7 +13,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['category'])) {
     header('Location: ./error.php?error=Page not found');
 }
 
-
+//storing required variables for this page
 $regNo = $_SESSION['regNo'];
 $currentSemester = $_SESSION['currentSemester'];
 $program = $_SESSION['program'];
@@ -23,7 +23,7 @@ $sql = "SELECT * FROM course WHERE program = '$program' AND semester = '$current
 $result = mysqli_query($conn, $sql);
 $studentCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-//determining if result released
+//determining if result released for current semester
 //      checking if all courses submitted 
 $cousesNotSubmitted = array_filter($studentCourses, fn ($course) => $course['isSubmitted'] == '0');
 echo '<br>';
@@ -47,7 +47,7 @@ if ($viewResult) {
     ];
 
     //fetching practical grades
-    $sql = "SELECT c.credit, g.grade, c.courseName, c.id FROM course c, practicalGrade g WHERE g.regNo = '$regNo' AND g.course_id = c.id AND c.semester = '$currentSemester'";
+    $sql = "SELECT c.credit, g.grade FROM course c, practicalGrade g WHERE g.regNo = '$regNo' AND g.course_id = c.id AND c.semester = '$currentSemester'";
     $result = mysqli_query($conn, $sql);
     $practicalGrades = mysqli_fetch_all($result, MYSQLI_ASSOC);
     // print_r($practicalGrades);
@@ -60,7 +60,7 @@ if ($viewResult) {
     }, $practicalGrades);
 
     //fetching theory grades
-    $sql = "SELECT c.credit, g.grade , c.courseName, c.id FROM course c, theoryGrade g WHERE g.regNo = '$regNo' AND g.course_id = c.id AND c.semester = '$currentSemester'";
+    $sql = "SELECT c.credit, g.grade FROM course c, theoryGrade g WHERE g.regNo = '$regNo' AND g.course_id = c.id AND c.semester = '$currentSemester'";
     $result = mysqli_query($conn, $sql);
     $theoryGrades = mysqli_fetch_all($result, MYSQLI_ASSOC);
     // print_r($theoryGrades);
