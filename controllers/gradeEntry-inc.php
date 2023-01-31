@@ -106,6 +106,8 @@ if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SES
             $grade = 'D';
         } else if ($total_marks >= 25) {
             $grade = 'E';
+        } else {
+            $grade = 'F';
         }
 
         // for absent student all marks

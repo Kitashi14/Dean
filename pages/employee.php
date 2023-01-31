@@ -41,7 +41,7 @@ $_SESSION['employeeCoursesId'] = $employeeCoursesId;
 
         </div>
 
-        <!--course entry button for employee  -->
+        <!-- session status and course entry button for employee  -->
         <div class=" w-1/2 mt-4 bg-gray-200 py-10 px-4 flex flex-col justify-evenly items-center">
             <div class="bg-gray-200 mt-1 w-1/2 flex flex-col justify-around items-center ">
                 <h2 class="block mb-2 text-lg font-bold text-blue-900"> Current Semester : <?php echo $_SESSION['currentSemester'] ?></h2>
@@ -52,7 +52,7 @@ $_SESSION['employeeCoursesId'] = $employeeCoursesId;
 
             <?php
             //button will be shown only if its allowed
-            echo $_SESSION['isCourseEntryAllowed'] == 1 ? '<a class="bg-sky-600 h-10 text-center flex items-center text-white py-1 px-3 " href="' . rootUrl . '/pages/courseEntryForm.php">Enter Course</a>' : '';
+            echo $_SESSION['isCourseEntryAllowed'] == '1' ? '<a class="bg-sky-600 h-10 text-center flex items-center text-white py-1 px-3 " href="' . rootUrl . '/pages/courseEntryForm.php">Enter Course</a>' : '';
 
             ?>
 
@@ -100,7 +100,7 @@ $_SESSION['employeeCoursesId'] = $employeeCoursesId;
 
         </table>
         <?php
-        echo $isEmpty ? '<h3 class="my-4 bg-sky-200 py-2 text-center">No Courses added yet</h3>' : '';
+        echo $isEmpty ? '<h3 class="my-4 bg-sky-200 py-2 text-center">No courses added yet</h3>' : '';
         ?>
 
     </div>

@@ -10,7 +10,7 @@ require_once($rootDir . '/config.php');
 session_start();
 
 // handling login POST request
-if (isset($_POST['submit']) && isset($_POST['course_id']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SESSION['isGradeEntryAllowed'] == '1')) {
+if (isset($_POST['submit']) && isset($_SESSION['currentSemester']) && isset($_POST['course_id']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SESSION['isGradeEntryAllowed'] == '1')) {
     //connecting to database
     require_once($rootDir . '/database.php');
 
@@ -27,21 +27,41 @@ if (isset($_POST['submit']) && isset($_POST['course_id']) && isset($_SESSION['is
         header('Location: ./error.php?error=Page not found');
     } else {
 
-        //sql for updating course
-        $sql = "UPDATE course SET isSubmitted = '1' WHERE id='$requestedCourseId'";
+        //fetching course details
+        $sql = "SELECT * FROM course WHERE id = '$requestedCourseId'";
+        $result = mysqli_query($conn, $sql);
+        $courseDetails = mysqli_fetch_all($result, MYSQLI_ASSOC)[0];
 
-        //updating data
-        if (mysqli_query($conn, $sql)) {
-            // success
-            echo '<script>';
-            echo 'window.location= "', rootUrl, '/pages/course.php?course_id=', $requestedCourseId, '"; </script>';
+        //saving required variables
+        $program = $courseDetails['program'];
+        $gradeTable = $courseDetails['isTheory'] == '1' ? 'theorygrade' : 'practicalgrade';
+
+        //fetching students who are not graded
+        $sql = "SELECT S.regNo FROM student S WHERE S.regNo NOT IN (SELECT s.regNo FROM student s, $gradeTable g WHERE s.regNo = g.regNo AND g.course_id = '$requestedCourseId' AND s.program='$program') AND S.program = '$program'";
+
+        $result = mysqli_query($conn, $sql);
+        $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        if (empty($studentsNotGraded)) {
+            //sql for updating course
+            $sql = "UPDATE course SET isSubmitted = '1' WHERE id='$requestedCourseId'";
+
+            //updating data
+            if (mysqli_query($conn, $sql)) {
+                // success
+                echo '<script>';
+                echo 'window.location= "', rootUrl, '/pages/course.php?course_id=', $requestedCourseId, '"; </script>';
+            } else {
+                // error
+                header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
+            }
         } else {
-            // error
-            header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
+            //in case of students left to grade redirecting to course page
+            echo '<script>alert("Students left to grade. Please grade all students first.");';
+            echo 'window.location= "', rootUrl, '/pages/course.php?course_id=', $_POST['course_id'], '"; </script>';
         }
     }
 } else {
-    echo 'sdjls';
     // handling directing access of this file 
     // header('Location: ./../pages/error.php?error=Page not found');
 }

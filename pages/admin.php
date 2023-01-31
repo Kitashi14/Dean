@@ -49,16 +49,17 @@ $notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
     </div>
     <!-- courses not submitted yet  -->
     <div class="px-5 mt-5" <?php echo ($_SESSION['isGradeEntryAllowed'] == '0') ? 'style="display: none;"' : '' ?>>
-        <h2 class="text-xl font-normal text-sky-700 px-3">Courses with grade submission: </h2>
+        <h2 class="text-xl font-normal text-red-700 px-3">Courses not submitted: </h2>
         <table class="w-full text-center mt-3 ">
-            <thead class="bg-sky-600 py-4">
+            <thead class="bg-red-600 py-4">
                 <tr>
                     <th class="py-2">Course ID</th>
                     <th class="py-2">Course Name</th>
+                    <th class="py-2">Type</th>
                     <th class="py-2">Program</th>
                     <th class="py-2">Employee Name</th>
                     <th class="py-2">Employee Id</th>
-                    <th class="py-2">Type</th>
+
                 </tr>
             </thead>
 
@@ -70,7 +71,7 @@ $notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     $isEmpty = true;
                 } else {
                     array_map(function ($course) {
-                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $course['id'], '</td><td>', $course['courseName'], '</td><td>', $course['program'], '</td><td>', $course['name'], '</td><td>', $course['employee_id'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td>', '</tr>';
+                        echo '<tr class="bg-red-100 p-0 odd:bg-red-300"><td>', $course['id'], '</td><td>', $course['courseName'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['program'], '</td><td>', $course['name'], '</td><td>', $course['employee_id'], '</td></tr>';
                     }, $notSubmittedCourses);
                 }
 
@@ -81,7 +82,7 @@ $notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
         </table>
         <?php
-        echo $isEmpty ? '<h3 class="my-4 bg-sky-200 py-2 text-center">No Courses added yet</h3>' : '';
+        echo $isEmpty ? '<h3 class="my-4 bg-red-200 py-2 text-center">All courses submitted</h3>' : '';
         ?>
 
     </div>

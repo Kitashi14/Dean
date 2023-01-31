@@ -38,7 +38,6 @@ if (!in_array($pageCourseId, $employeeCoursesId)) {
 $sql = "SELECT * FROM course WHERE id = '$pageCourseId'";
 $result = mysqli_query($conn, $sql);
 $courseDetails = mysqli_fetch_all($result, MYSQLI_ASSOC)[0];
-echo  '<br>';
 
 
 
@@ -191,6 +190,7 @@ $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
             ?>
             <form action="<?php echo rootUrl . '/controllers/submitGrade-inc.php' ?>" class=" mt-3 text-center text-red-500 flex flex-col items-center" method="POST" <?php echo ($_SESSION['isGradeEntryAllowed'] == '1') && ($courseDetails['isSubmitted'] == '0') && (empty($studentsNotGraded)) ? '' : 'style="display: none;"' ?>>
                 <input type="text" style="display: none;" name="course_id" value="<?php echo $courseDetails['id']; ?>">
+
                 <input type="submit" class=" px-10 my-0 bg-red-500 text-center flex items-center justify-center text-white py-1 px-3 hover:bg-red-700 " name="submit" value="Submit Grade" />
                 (Can't change grade after submission)
             </form>
