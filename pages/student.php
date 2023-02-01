@@ -116,7 +116,7 @@ if ($viewResult) {
 
     <!-- course details of current semester  -->
     <div class="p-4 mt-5">
-        <h2 class="text-xl font-normal text-green-700 px-3">Courses for this semester: </h2>
+        <h2 class="text-xl font-normal text-green-700 px-3">Courses in this semester: </h2>
         <table class="w-full text-center mt-3">
             <thead class="bg-green-600 py-4">
                 <tr>

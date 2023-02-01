@@ -35,7 +35,7 @@ $notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
         </div>
 
         <!--current status and  button to set status form page  -->
-        <div class=" w-1/2 mt-4 bg-gray-200 py-10 px-4 flex flex-col justify-evenly items-center">
+        <div class=" w-1/2 mt-4 bg-gray-200 py-10 px-4 flex flex-col justify-evenly items-center space-y-2">
 
             <div class="bg-gray-200 mt-1 w-1/2 flex flex-col justify-around items-center ">
                 <h2 class="block mb-2 text-m font-bold text-blue-900"> Current Semester : <?php echo $_SESSION['currentSemester'] ?></h2>
@@ -43,7 +43,8 @@ $notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <h2 class="block mb-2 text-m font-bold text-<?php echo $_SESSION['isGradeEntryAllowed'] ? 'green' : 'red'; ?>-600"> <?php echo $_SESSION['isGradeEntryAllowed'] ? 'Grade entry allowed' : 'Grade entry blocked'; ?></h2>
 
             </div>
-            <a class="bg-sky-600 h-10 text-center flex items-center text-white py-1 px-3 " href="<?php echo rootUrl, '/pages/statusForm.php'; ?>">Change Status</a>
+            <a class="bg-red-600 h-10 text-center flex items-center text-white py-1 px-3 " href="<?php echo rootUrl, '/pages/statusForm.php'; ?>">Change Status</a>
+            <a class="bg-sky-600 h-10 text-center flex items-center text-white py-1 px-3 " href="<?php echo rootUrl, '/pages/addUserForm.php'; ?>">Add User</a>
 
         </div>
     </div>

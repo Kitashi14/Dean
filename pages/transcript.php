@@ -123,7 +123,7 @@ $maxSemester = $isCurSemResultReleased ? (int)$currentSemester : (int)$currentSe
 
             echo '<div class="w-1/2 p-4 mt-5 ">
             <h2 class="text-xl font-normal text-green-700 px-3">Semester: ', $semesterNo, ' (', $semResult, ')</h2>
-            <div class="border-2 border-black mt-3 hover:shadow-2xl hover:scale-105 hover:duration-200 hover:transition">
+            <div class="border-2 border-black mt-3 ">
             <table class="w-full text-center ">
                 <thead class="bg-green-600 py-4">
                     <tr>
