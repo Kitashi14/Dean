@@ -25,23 +25,15 @@ if (isset($_SESSION['uid']) && isset($_SESSION['isAdmin'])) {
                 <label for="semester" class="block mb-2 text-sm font-bold text-center text-gray-700">
                     Semester
                 </label>
-                <input id="semester" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="currentSemester" min="1" max="8" value="<?php echo $_SESSION['currentSemester'] ?>" placeholder="Enter current semester" required>
+                <input id="semester" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="setSemester" min="<?php echo $_SESSION['currentSemester'] ?>" max="8" value="<?php echo $_SESSION['currentSemester'] ?>" placeholder="Enter  semester" required>
             </div>
             <br>
-            <div class="w-full flex flex-row justify-between">
-                <label class="w-1/2 block text-sm font-bold text-gray-700 ml-6" for="">Course entry allowed ?</label>
-                <div class="w-1/2">
-                    <input type="radio" name="isCourseEntryAllowed" value="yes" required> YES <br>
-                    <input type="radio" name="isCourseEntryAllowed" value="no" required> NO
-                </div>
-
-            </div>
-            <br>
-            <div class="w-full flex flex-row justify-between">
-                <label class="w-1/2 block text-sm font-bold text-gray-700 ml-6" for="">Grade entry allowed ?</label>
-                <div class="w-1/2">
-                    <input type="radio" name="isGradeEntryAllowed" value="yes" required> YES <br>
-                    <input type="radio" name="isGradeEntryAllowed" value="no" required> NO
+            <div class="w-full flex flex-row justify-around items-center">
+                <label class="w-1/3 block text-sm font-bold text-gray-700 ml-6" for="">Allowed to enter : </label>
+                <div class="w-2/3 flex flex-row justify-evenly">
+                    <input type="radio" name="allowed" value="courseEntry" required> Course <br>
+                    <input type="radio" name="allowed" value="gradeEntry" required> Grade <br>
+                    <input type="radio" name="allowed" value="none" required> none
                 </div>
 
             </div>
