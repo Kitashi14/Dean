@@ -48,7 +48,7 @@ if (isset($_POST['submit'])) {
 
                 //storing data of user to variables
                 $category = $user['category'];
-                $isAdmin = $user['isAdmin'];
+                $isAdmin = (bool)$user['isAdmin'];
                 $uid = $user['id'];
 
                 // fetching data of user as per category

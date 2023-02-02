@@ -8,7 +8,7 @@ require_once($rootDir . '/config.php');
 session_start();
 
 // handling login POST request
-if (isset($_POST['submit'])) {
+if (isset($_POST['submit'])&& isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']==true) {
     //connecting to database
     require_once($rootDir . '/database.php');
 

@@ -10,7 +10,7 @@ require_once($rootDir . '/config.php');
 session_start();
 
 // handling login POST request
-if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SESSION['isGradeEntryAllowed'] == '1')) {
+if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SESSION['isGradeEntryAllowed'] == '1')&& isset($_SESSION['category']) && $_SESSION['category']=='employee') {
     //connecting to database
     require_once($rootDir . '/database.php');
 
