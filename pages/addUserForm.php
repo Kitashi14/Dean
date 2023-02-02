@@ -76,7 +76,7 @@ $programs = ['B.Tech', 'M.Tech', 'MCA'];
                     </select>
                 </div>
                 <div class="pt-5 w-1/3 ">
-                    <input type="submit" class="w-full h-8 bg-green-800 hover:bg-green-600 text-white " value="Add Student">
+                    <input type="submit" name="submit" class="w-full h-8 bg-green-800 hover:bg-green-600 text-white " value="Add Student">
                 </div>
 
             </form>
@@ -111,10 +111,10 @@ $programs = ['B.Tech', 'M.Tech', 'MCA'];
                     <label for="position" class="block mb-0 text-sm font-bold text-gray-700">
                         Position :
                     </label>
-                    <input id="position" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="text" name="postion" placeholder="Enter employee position" required>
+                    <input id="position" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="text" name="position" placeholder="Enter employee position" required>
                 </div>
                 <div class="pt-5 w-1/3 ">
-                    <input type="submit" class="w-full h-8 bg-green-800 hover:bg-green-600 text-white " value="Add Employee">
+                    <input type="submit" name="submit" class="w-full h-8 bg-green-800 hover:bg-green-600 text-white " value="Add Employee">
                 </div>
             </form>
 

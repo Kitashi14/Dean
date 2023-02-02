@@ -23,7 +23,6 @@ if (isset($_POST['submit'])) {
         //if not present then redirecting to login page
         echo '<script>alert("User details not found");';
         echo 'window.location= "./../pages/login.php"; </script>';
-
     } else {
 
         //fetching user as per provided email 
@@ -42,7 +41,7 @@ if (isset($_POST['submit'])) {
 
             //checking whether password is matching or not 
             if ($password == $user[0]['password']) {
-                
+
                 //when password matched
                 $user = $user[0];
 
@@ -86,10 +85,8 @@ if (isset($_POST['submit'])) {
 
                         header('Location:  ./../pages/employee.php');
                     }
-
-
                 }
-            } 
+            }
             //if password not matched then redirecting to login page with necessary alert
             else {
                 echo '<script>alert("Invalid credentials. Please login again");';
@@ -99,5 +96,5 @@ if (isset($_POST['submit'])) {
     }
 } else {
     // handling directing access of this file 
-    echo 'Bad request <br> Go to <a href="' . rootUrl . '/pages/login.php' . '"/>Login</a> page';
+    header('Location: ./../pages/error.php?error=Bad Request&message=Go to <a href="' . rootUrl . '/pages/login.php' . '"/>Login</a> page');
 }

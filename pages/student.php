@@ -72,10 +72,13 @@ if ($viewResult) {
         $subjectFailed = $subjectFailed + ($gradeTable[$grade['grade']] < 4 ? 1 : 0);
     }, $theoryGrades);
 
-    $spi = round($creditObtained / $totalCreditAvailable, 2);
-    $isFailed = ($spi < 5) || ($subjectFailed > 4) ? true : false;
-
-    // echo '<br>', $creditObtained, '<br>', $totalCreditAvailable, '<br>', $spi, '<br>', $subjectFailed, '<br>', (int)$isFailed;
+    $spi = 'NA';
+    if ($totalCreditAvailable > 0) {
+        $spi = round($creditObtained / $totalCreditAvailable, 2);
+        $isFailed = ($spi < 5) || ($subjectFailed > 4) ? true : false;
+    } else {
+        $isFailed = false;
+    }
 }
 
 

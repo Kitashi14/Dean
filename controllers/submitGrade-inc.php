@@ -63,5 +63,5 @@ if (isset($_POST['submit']) && isset($_SESSION['currentSemester']) && isset($_PO
     }
 } else {
     // handling directing access of this file 
-    // header('Location: ./../pages/error.php?error=Page not found');
+    header('Location: ./../pages/error.php?error=Page not found');
 }
