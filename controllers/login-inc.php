@@ -82,6 +82,7 @@ if (isset($_POST['submit'])) {
                     } else {
                         $_SESSION['eid'] = $userData['id'];
                         $_SESSION['position'] = $userData['position'];
+                        $_SESSION['phoneNo'] = $userData['phoneNo'];
 
                         header('Location:  ./../pages/employee.php');
                     }

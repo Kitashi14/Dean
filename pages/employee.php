@@ -38,6 +38,7 @@ $_SESSION['employeeCoursesId'] = $employeeCoursesId;
             <h2> Name : <?php echo $_SESSION['name'] ?></h2>
             <h2> Email : <?php echo $_SESSION['email'] ?></h2>
             <h2> Position : <?php echo $_SESSION['position'] ?></h2>
+            <h2> Phone No : <?php echo $_SESSION['phoneNo'] ?></h2>
 
         </div>
 
