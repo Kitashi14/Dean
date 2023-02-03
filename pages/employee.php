@@ -65,9 +65,9 @@ $_SESSION['employeeCoursesId'] = $employeeCoursesId;
     </div>
 
     <!-- course details of next/current semester  -->
-    <div class="p-0 mt-5">
+    <div class="pl-1 mt-5">
         <h2 class="text-xl font-normal text-sky-700 px-3">Courses for <?php echo $_SESSION['isCourseEntryAllowed'] == '1' ? 'next' : 'current' ?> semester: </h2>
-        <table class="w-full text-center mt-3 mx-1">
+        <table class="w-full text-center mt-3 mx-0">
             <thead class="bg-sky-600 py-4">
                 <tr>
                     <th class="py-2">Sr No</th>
