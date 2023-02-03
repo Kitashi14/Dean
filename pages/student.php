@@ -41,9 +41,8 @@ if ($viewResult) {
         'B' => 7,
         'C' => 6,
         'D' => 4,
-        'E' => 3,
-        'F' => 1,
-        'Ab' => 0
+        'E' => 2,
+        'F' => 0
     ];
 
     //fetching practical grades

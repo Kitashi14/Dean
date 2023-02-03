@@ -10,7 +10,7 @@ require_once($rootDir . '/config.php');
 session_start();
 
 // handling login POST request
-if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SESSION['isGradeEntryAllowed'] == '1')&& isset($_SESSION['category']) && $_SESSION['category']=='employee') {
+if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SESSION['isGradeEntryAllowed'] == '1') && isset($_SESSION['category']) && $_SESSION['category'] == 'employee') {
     //connecting to database
     require_once($rootDir . '/database.php');
 
@@ -91,7 +91,7 @@ if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SES
         //calculating grade
         $total_marks = $internal + $midSem + $endSem;
         if ($_POST['submit'] == 'Absent') {
-            $grade = 'Ab';
+            $grade = 'F';
         } else if ($total_marks >= 85) {
             $grade = 'A+';
         } else if ($total_marks >= 75) {
@@ -104,16 +104,15 @@ if (isset($_POST['submit']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SES
             $grade = 'C';
         } else if ($total_marks >= 30) {
             $grade = 'D';
-        } else if ($total_marks >= 25) {
+        } else if ($total_marks >= 15) {
             $grade = 'E';
         } else {
             $grade = 'F';
         }
 
         // for absent student all marks
-        $internal = $grade == 'Ab' ? 0 : $internal;
-        $midSem = $grade == 'Ab' ? 0 : $midSem;
-        $endSem = $grade == 'Ab' ? 0 : $endSem;
+        $midSem = $_POST['submit'] == 'Absent' ? 0 : $midSem;
+        $endSem = $_POST['submit'] == 'Absent' ? 0 : $endSem;
 
         //database request 
         if ($formType == 'Enter') {

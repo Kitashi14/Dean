@@ -78,9 +78,8 @@ $maxSemester = $isCurSemResultReleased ? (int)$currentSemester : (int)$currentSe
             'B' => 7,
             'C' => 6,
             'D' => 4,
-            'E' => 3,
-            'F' => 1,
-            'Ab' => 0
+            'E' => 2,
+            'F' => 0
         ];
         for ($semesterNo = 1; $semesterNo <= $maxSemester; $semesterNo++) {
             $creditObtained = 0;
@@ -144,7 +143,7 @@ $maxSemester = $isCurSemResultReleased ? (int)$currentSemester : (int)$currentSe
                 array_map(function ($course) {
                     echo '<tr class="bg-green-100 odd:bg-green-300"><td>', $course['courseCode'], '</td><td>', $course['courseName'], '</td><td>', $course['credit'], '</td><td>', $course['grade'], '</td></tr>';
                 }, $semGrades);
-                echo '<tr class="bg-green-800 text-white mt-2 font-bold"><td></td><td></td><td>SPI</td><td>', $spi, '</td></tr>';
+                echo '<tr class="bg-white mt-2 font-bold"><td></td><td></td><td>SPI</td><td>', $spi, '</td></tr>';
             }
             echo '</tbody>
 

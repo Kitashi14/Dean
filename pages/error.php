@@ -11,11 +11,12 @@ try {
     if (isset($_GET['error'])) {
         // if present then showing requested error
         $err = $_GET['error'];
-        echo '<title>404 Not Found</title>
+        echo '<title>Error</title>
         </head><body>
-        <h1>',$err,'</h1>
-        <p>', isset($_GET['message']) ? $_GET['message'] : '','</p>
-        <hr>';
+        <h1>', $err, '</h1>
+        <p>', isset($_GET['message']) ? $_GET['message'] : '', '</p>
+        <hr>
+        <a href="./../index.php">home</a>';
     } else {
 
         //if not redirecting to necessary error page
