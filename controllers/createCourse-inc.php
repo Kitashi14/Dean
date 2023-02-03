@@ -51,28 +51,66 @@ if (isset($_POST['submit']) && isset($_SESSION['isCourseEntryAllowed']) && ($_SE
                 $midSem = empty($midSem) ? NULL : $midSem;
                 $eid = $_SESSION['eid'];
 
-                //sql to searching for duplicate entry
-                $sql = "SELECT * FROM course WHERE semester = '$semester' AND courseCode = '$courseCode' AND program = '$program' AND isTheory = '$isTheory'";
+                //check request type 
+                $requestType = $_POST['submit'] == 'ADD' ? 'insert' : 'update';
 
-                //fetching for dulplicate entry 
-                $result = mysqli_query($conn, $sql);
-                $presence = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                if ($requestType == 'insert') {
+                    //sql to searching for duplicate entry
+                    $sql = "SELECT * FROM course WHERE semester = '$semester' AND courseCode = '$courseCode' AND program = '$program' AND isTheory = '$isTheory'";
 
-                // handling error if duplicate present
-                if (!empty($presence)) {
-                    echo '<script>alert("This course has been already added to ' . $program . ' students for this semester. Enter another course.");';
-                    echo 'window.location= "./../pages/courseEntryForm.php"; </script>';
-                } else {
-                    //sql for inserting course
-                    $sql = "INSERT INTO course (id, employee_id, semester, courseName, courseCode, credit, isTheory, program, isSubmitted, internal, midsem, endsem, createdAt) VALUES (NULL, '$eid', '$semester', '$courseName', '$courseCode', '$credit', '$isTheory', '$program', '0', '$internal', '$midSem', '$endSem', current_timestamp())";
+                    //fetching for dulplicate entry 
+                    $result = mysqli_query($conn, $sql);
+                    $presence = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-                    //inserting to database
-                    if (mysqli_query($conn, $sql)) {
-                        // success
-                        header('Location: ./../pages/employee.php');
+                    // handling error if duplicate present
+                    if (!empty($presence)) {
+                        echo '<script>alert("This course has been already added to ' . $program . ' students for this semester. Enter another course.");';
+                        echo 'window.location= "./../pages/courseEntryForm.php"; </script>';
                     } else {
-                        // error
-                        header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
+                        //sql for inserting course
+                        $sql = "INSERT INTO course (id, employee_id, semester, courseName, courseCode, credit, isTheory, program, isSubmitted, internal, midsem, endsem, createdAt) VALUES (NULL, '$eid', '$semester', '$courseName', '$courseCode', '$credit', '$isTheory', '$program', '0', '$internal', '$midSem', '$endSem', current_timestamp())";
+
+                        //inserting to database
+                        if (mysqli_query($conn, $sql)) {
+                            // success
+                            header('Location: ./../pages/employee.php');
+                        } else {
+                            // error
+                            header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
+                        }
+                    }
+                } else {
+                    //update course 
+
+                    if (empty($_POST['course_id'])) {
+                        header('Location: ./error.php?error=Details Not Found');
+                    } else {
+                        $requestedCourseId = $_POST['course_id'];
+                        $eid = $_SESSION['eid'];
+                        //is case of update form checking authencity
+                        $sql = "SELECT * FROM course WHERE id = '$requestedCourseId' AND employee_id='$eid' AND semester='$semester'";
+                        $result = mysqli_query($conn, $sql);
+                        $courseDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                        if (empty($courseDetails)) {
+                            //if no course found
+                            header('Location: ./error.php?error=Not Found&message=The requested course was not found in database.');
+                        } else {
+                            //updating course details
+
+                            //sql for updating
+                            $sql = "UPDATE course SET courseName='$courseName', courseCode='$courseCode', credit='$credit', isTheory='$isTheory', program='$program', internal='$internal', midsem='$midSem', endsem='$endSem' 
+                                 WHERE id='$requestedCourseId'";
+
+                            //updating data
+                            if (mysqli_query($conn, $sql)) {
+                                // success
+                                echo '<script>';
+                                echo 'window.location= "', rootUrl, '/pages/employee.php"; </script>';
+                            } else {
+                                // error
+                                header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
+                            }
+                        }
                     }
                 }
             }
