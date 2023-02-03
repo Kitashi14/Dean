@@ -47,7 +47,7 @@ if (isset($_POST['submit']) && isset($_SESSION['isCourseEntryAllowed']) && ($_SE
                 //storing values in variables for easy usage
                 $user_id = $_SESSION['uid'];
                 $isTheory = $type == 'theory' ? 1 : 0;
-                $semester = $_SESSION['currentSemester'];
+                $semester = (int)$_SESSION['currentSemester'] + 1;
                 $midSem = empty($midSem) ? NULL : $midSem;
                 $eid = $_SESSION['eid'];
 
@@ -64,7 +64,7 @@ if (isset($_POST['submit']) && isset($_SESSION['isCourseEntryAllowed']) && ($_SE
 
                     // handling error if duplicate present
                     if (!empty($presence)) {
-                        echo '<script>alert("This course has been already added to ' . $program . ' students for this semester. Enter another course.");';
+                        echo '<script>alert("This course has been already added to ' . $program . ' students for next semester. Enter another course.");';
                         echo 'window.location= "./../pages/courseEntryForm.php"; </script>';
                     } else {
                         //sql for inserting course

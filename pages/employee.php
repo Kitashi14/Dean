@@ -6,7 +6,7 @@ include './../inc/header.php';
 
 
 // redirecting if user is not set or not employee
-if (isset($_SESSION['uid']) && isset($_SESSION['category'])) {
+if (isset($_SESSION['uid']) && isset($_SESSION['category']) && isset($_SESSION['isCourseEntryAllowed']) && isset($_SESSION['isGradeEntryAllowed'])) {
     if ($_SESSION['category'] != 'employee') {
         header('Location: ./error.php?error=Page not found');
     }
@@ -17,8 +17,10 @@ if (isset($_SESSION['uid']) && isset($_SESSION['category'])) {
 $eid = $_SESSION['eid'];
 $currentSemester = $_SESSION['currentSemester'];
 
-//fetching employee courses from db for current semester
-$sql = "SELECT * FROM course WHERE employee_id = '$eid' AND semester = '$currentSemester' ORDER BY courseName ASC";
+$fetchSemester = $_SESSION['isCourseEntryAllowed'] == '1' ? (int)$currentSemester + 1 : $currentSemester;
+
+//fetching employee courses from db for next/current semester
+$sql = "SELECT * FROM course WHERE employee_id = '$eid' AND semester = '$fetchSemester' ORDER BY courseName ASC";
 $result = mysqli_query($conn, $sql);
 $employeeCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
@@ -62,9 +64,9 @@ $_SESSION['employeeCoursesId'] = $employeeCoursesId;
 
     </div>
 
-    <!-- course details of current semester  -->
+    <!-- course details of next/current semester  -->
     <div class="p-0 mt-5">
-        <h2 class="text-xl font-normal text-sky-700 px-3">Courses for this semester: </h2>
+        <h2 class="text-xl font-normal text-sky-700 px-3">Courses for <?php echo $_SESSION['isCourseEntryAllowed'] == '1' ? 'next' : 'current' ?> semester: </h2>
         <table class="w-full text-center mt-3 mx-1">
             <thead class="bg-sky-600 py-4">
                 <tr>
