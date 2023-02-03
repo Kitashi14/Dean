@@ -46,7 +46,7 @@ if (isset($_GET['course_id'])) {
 
 <!-- set status form  -->
 <div class="flex flex-col justify-between p-2 bg-orange-200  container mx-auto w-1/3 mb-15  mt-4 mb-4 rounded-lg border ">
-    <form action="<?php echo rootUrl . '/controllers/courseEntry.php' ?>" method="POST" class="px-4 pt-1 pb-2 mb-0 bg-white rounded">
+    <form action="<?php echo rootUrl . '/controllers/courseEntry-inc.php' ?>" method="POST" class="px-4 pt-1 pb-2 mb-0 bg-white rounded">
         <input type="text" style="display: none;" name="course_id" value="<?php echo isset($_GET['course_id']) ? $courseDetails['id'] : '' ?>">
         <div class="flex flex-col justify-around  px-3 space-y-2 items-center">
             <h1 for="email" class="block mb-2 text-xl font-bold text-center text-blue-600">
