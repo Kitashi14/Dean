@@ -63,7 +63,7 @@ $programs = ['B.Tech', 'M.Tech', 'MCA'];
                 <label for="internal" class="block mb-2 text-sm font-bold text-gray-700">
                     Max. marks for internal
                 </label>
-                <input id="internal" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="internal" min="0" max="100" placeholder="Enter internal marks" required>
+                <input id="internal" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="internal" min="0" max="100" value="0" placeholder="Enter internal marks" required>
                 <label for="midSem" class="block mb-2 text-sm font-bold text-gray-700">
                     Max. marks for mid sem
                 </label>
@@ -73,7 +73,7 @@ $programs = ['B.Tech', 'M.Tech', 'MCA'];
                     Max. marks for end sem
                 </label>
 
-                <input id="endSem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="endSem" min="0" max="100" placeholder="Enter endsem marks" required>
+                <input id="endSem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="endSem" min="0" max="100" value="0" placeholder="Enter endsem marks" required>
             </div>
 
             <div class="mb-3 w-1/3 bg-red-400">
