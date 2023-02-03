@@ -107,7 +107,7 @@ $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
         </div>
         <!-- buttons for editing and deleting  -->
-        <div class="w-full flex flex-row justify-end items-center p-2 space-x-4">
+        <div class="w-full flex flex-row justify-end items-center p-2 space-x-4" <?php echo ($_SESSION['isCourseEntryAllowed'] == '1') ? '' : 'style="display: none;"' ?>>
             <a class="bg-sky-600 h-10 w-40 justify-center flex items-center text-white py-1 px-3 " href="<?php echo rootUrl, '/pages/courseEntryForm.php?course_id=', $courseDetails['id']; ?>">EDIT</a>
             <a class="bg-red-600 h-10 w-40 justify-center flex items-center text-white py-1 px-3 " href="<?php echo rootUrl, '/controllers/deleteCourse-inc.php?course_id=', $courseDetails['id']; ?>">DELETE</a>
         </div>

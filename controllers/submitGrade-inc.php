@@ -24,7 +24,7 @@ if (isset($_POST['submit']) && isset($_SESSION['currentSemester']) && isset($_PO
     //checking if employee has the access of this course or not
     if (!in_array($requestedCourseId, $employeeCoursesId)) {
         //if not redirecting to necessary error page
-        header('Location: ./error.php?error=Page not found');
+        header('Location: ./../pages/error.php?error=Page not found');
     } else {
 
         //fetching course details

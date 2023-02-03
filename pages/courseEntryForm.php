@@ -7,7 +7,7 @@ include './../inc/header.php';
 // redirecting if user is not set or not employee or if course entry no allowed
 if (isset($_SESSION['uid']) && isset($_SESSION['category']) && isset($_SESSION['isCourseEntryAllowed'])) {
     if ($_SESSION['category'] != 'employee' || $_SESSION['isCourseEntryAllowed'] == '0') {
-        header('Location: ./error.php?error=Page not found');
+        header('Location: ./error.php?error=Bad Request');
     }
 } else {
     header('Location: ./error.php?error=Page not found');
@@ -15,15 +15,19 @@ if (isset($_SESSION['uid']) && isset($_SESSION['category']) && isset($_SESSION['
 
 $programs = ['B.Tech', 'M.Tech', 'MCA'];
 $formType = 'Enter';
+
 //checking if update form requested
 if (isset($_GET['course_id'])) {
 
     if (empty($_GET['course_id'])) {
         header('Location: ./error.php?error=Details Not Found');
     } else {
+
+        //storing required variables
         $requestedCourseId = $_GET['course_id'];
         $eid = $_SESSION['eid'];
         $currentSemester = $_SESSION['currentSemester'];
+
         //is case of update form checking authencity
         $sql = "SELECT * FROM course WHERE id = '$requestedCourseId' AND employee_id='$eid' AND semester='$currentSemester'";
         $result = mysqli_query($conn, $sql);

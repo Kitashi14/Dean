@@ -83,7 +83,7 @@ if (isset($_POST['submit']) && isset($_SESSION['isCourseEntryAllowed']) && ($_SE
                     //update course 
 
                     if (empty($_POST['course_id'])) {
-                        header('Location: ./error.php?error=Details Not Found');
+                        header('Location: ./../pages/error.php?error=Details Not Found');
                     } else {
                         $requestedCourseId = $_POST['course_id'];
                         $eid = $_SESSION['eid'];
@@ -93,7 +93,7 @@ if (isset($_POST['submit']) && isset($_SESSION['isCourseEntryAllowed']) && ($_SE
                         $courseDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
                         if (empty($courseDetails)) {
                             //if no course found
-                            header('Location: ./error.php?error=Not Found&message=The requested course was not found in database.');
+                            header('Location: ./../pages/error.php?error=Not Found&message=The requested course was not found in database.');
                         } else {
                             //updating course details
 
