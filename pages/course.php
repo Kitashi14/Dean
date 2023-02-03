@@ -141,7 +141,7 @@ $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     array_map(function ($student) {
                         global $courseDetails;
 
-                        echo '<tr class="bg-sky-100 p-0 odd:bg-sky-300"><td>', $student['name'], '</td><td>', $student['regNo'], '</td><td>', $student['internal'], '</td>', $courseDetails['isTheory'] == '1' ? '<td>' . $student['midsem'] . '</td>' : '', '<td>', $student['endsem'], '</td><td>', $student['grade'], '</td>', ($_SESSION['isGradeEntryAllowed'] == '1') && ($courseDetails['isSubmitted'] == '0') ? '<td class="py-1 bg-white px-2 w-1/6"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Change Grade</a></td>' : '', '</tr>';
+                        echo '<tr class="', $student['grade'] == 'E' || $student['grade'] == 'F' ? 'bg-red-600 odd:bg-red-500' : 'bg-sky-100 p-0 odd:bg-sky-300', '"><td>', $student['name'], '</td><td>', $student['regNo'], '</td><td>', $student['internal'], '</td>', $courseDetails['isTheory'] == '1' ? '<td>' . $student['midsem'] . '</td>' : '', '<td>', $student['endsem'], '</td><td>', $student['grade'], '</td>', ($_SESSION['isGradeEntryAllowed'] == '1') && ($courseDetails['isSubmitted'] == '0') ? '<td class="py-1 bg-white px-2 w-1/6"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Change Grade</a></td>' : '', '</tr>';
                     }, $studentsAlreadyGraded);
                 }
 
@@ -162,9 +162,9 @@ $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="p-4  mb-5" <?php echo ($courseDetails['isSubmitted'] == '1') ? 'style="display: none;"' : '' ?>>
 
         <div class="flex justify-center flex-col items-center">
-            <h2 class="text-xl w-1/2 font-normal text-red-700 px-3">Students to grade : </h2>
+            <h2 class="text-xl w-1/2 font-normal text-orange-700 px-3">Students to grade : </h2>
             <table class="w-1/2 text-center mt-3">
-                <thead class="bg-red-600 py-4">
+                <thead class="bg-orange-600 py-4">
                     <tr>
                         <th class="py-2">Name</th>
                         <th class="py-2">Reg No</th>
@@ -180,7 +180,7 @@ $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     } else {
                         array_map(function ($student) {
                             global $courseDetails;
-                            echo '<tr class="bg-red-100 p-0 odd:bg-red-300 my-5"><td class="py-2">', $student['name'], '</td><td>', $student['regNo'], '</td>', ($_SESSION['isGradeEntryAllowed'] == '1') && ($courseDetails['isSubmitted'] == '0') ? '<td class="py-1 bg-white px-2 w-1/4"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Enter Grade</a></td>' : '', '</tr>';
+                            echo '<tr class="bg-orange-100 p-0 odd:bg-orange-300 my-5"><td class="py-2">', $student['name'], '</td><td>', $student['regNo'], '</td>', ($_SESSION['isGradeEntryAllowed'] == '1') && ($courseDetails['isSubmitted'] == '0') ? '<td class="py-1 bg-white px-2 w-1/4"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Enter Grade</a></td>' : '', '</tr>';
                         }, $studentsNotGraded);
                     }
 
@@ -191,7 +191,7 @@ $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
             </table>
             <?php
-            echo $isEmpty ? '<h3 class=" w-1/2 bg-red-200 py-2 text-center">No students left for grading</h3>' : '';
+            echo $isEmpty ? '<h3 class=" w-1/2 bg-orange-200 py-2 text-center">No students left for grading</h3>' : '';
             ?>
             <form action="<?php echo rootUrl . '/controllers/submitGrade-inc.php' ?>" class=" mt-3 text-center text-red-500 flex flex-col items-center" method="POST" <?php echo ($_SESSION['isGradeEntryAllowed'] == '1') && ($courseDetails['isSubmitted'] == '0') && (empty($studentsNotGraded)) ? '' : 'style="display: none;"' ?>>
                 <input type="text" style="display: none;" name="course_id" value="<?php echo $courseDetails['id']; ?>">

@@ -10,7 +10,7 @@ require_once($rootDir . '/config.php');
 session_start();
 
 // handling login POST request
-if (isset($_POST['submit']) && isset($_SESSION['currentSemester']) && isset($_POST['course_id']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SESSION['isGradeEntryAllowed'] == '1')&& isset($_SESSION['category']) && $_SESSION['category']=='employee') {
+if (isset($_POST['submit']) && isset($_SESSION['currentSemester']) && isset($_POST['course_id']) && isset($_SESSION['isGradeEntryAllowed']) && ($_SESSION['isGradeEntryAllowed'] == '1') && isset($_SESSION['category']) && $_SESSION['category'] == 'employee') {
     //connecting to database
     require_once($rootDir . '/database.php');
 
@@ -49,8 +49,21 @@ if (isset($_POST['submit']) && isset($_SESSION['currentSemester']) && isset($_PO
             //updating data
             if (mysqli_query($conn, $sql)) {
                 // success
-                echo '<script>';
-                echo 'window.location= "', rootUrl, '/pages/course.php?course_id=', $requestedCourseId, '"; </script>';
+
+                //adding failed students to respective suppliTables
+                $suppliTable = $courseDetails['isTheory'] == '1' ? 'theorySuppli' : 'practicalSuppli';
+
+                //sql for inserting content of one table content to another table
+                $sql = "INSERT INTO $suppliTable (id,regNo,course_id,grade_id, createdAt)  (SELECT NULL, g.regNo, g.course_id, g.id, current_timestamp() FROM $gradeTable g WHERE g.course_id=$requestedCourseId AND (g.grade='E' OR g.grade='F'))";
+
+                if (mysqli_query($conn, $sql)) {
+                    //success
+                    echo '<script>';
+                    echo 'window.location= "', rootUrl, '/pages/course.php?course_id=', $requestedCourseId, '"; </script>';
+                } else {
+                    // error
+                    header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
+                }
             } else {
                 // error
                 header('Location: ./../pages/error.php?error=' . mysqli_error($conn));
