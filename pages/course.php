@@ -120,6 +120,7 @@ $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <table class="w-2/3 text-center mt-3 ">
             <thead class="bg-sky-600 py-4 te">
                 <tr>
+                    <th class="py-2">Sr No</th>
                     <th class="py-2">Name</th>
                     <th class="py-2">Reg No</th>
                     <th class="py-2">Internal Marks</th>
@@ -138,10 +139,11 @@ $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 if (empty($studentsAlreadyGraded)) {
                     $isEmpty = true;
                 } else {
+                    $count = 0;
                     array_map(function ($student) {
-                        global $courseDetails;
-
-                        echo '<tr class="', $student['grade'] == 'E' || $student['grade'] == 'F' ? 'bg-red-600 odd:bg-red-500' : 'bg-sky-100 p-0 odd:bg-sky-300', '"><td>', $student['name'], '</td><td>', $student['regNo'], '</td><td>', $student['internal'], '</td>', $courseDetails['isTheory'] == '1' ? '<td>' . $student['midsem'] . '</td>' : '', '<td>', $student['endsem'], '</td><td>', $student['grade'], '</td>', ($_SESSION['isGradeEntryAllowed'] == '1') && ($courseDetails['isSubmitted'] == '0') ? '<td class="py-1 bg-white px-2 w-1/6"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Change Grade</a></td>' : '', '</tr>';
+                        global $courseDetails, $count;
+                        $count++;
+                        echo '<tr class="', $student['grade'] == 'E' || $student['grade'] == 'F' ? 'bg-red-600 odd:bg-red-500' : 'bg-sky-100 p-0 odd:bg-sky-300', '"><td>', $count, '</td><td>', $student['name'], '</td><td>', $student['regNo'], '</td><td>', $student['internal'], '</td>', $courseDetails['isTheory'] == '1' ? '<td>' . $student['midsem'] . '</td>' : '', '<td>', $student['endsem'], '</td><td>', $student['grade'], '</td>', ($_SESSION['isGradeEntryAllowed'] == '1') && ($courseDetails['isSubmitted'] == '0') ? '<td class="py-1 bg-white px-2 w-1/6"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Change Grade</a></td>' : '', '</tr>';
                     }, $studentsAlreadyGraded);
                 }
 
@@ -166,6 +168,7 @@ $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
             <table class="w-1/2 text-center mt-3">
                 <thead class="bg-orange-600 py-4">
                     <tr>
+                        <th class="py-2">Sr No</th>
                         <th class="py-2">Name</th>
                         <th class="py-2">Reg No</th>
                     </tr>
@@ -178,9 +181,11 @@ $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     if (empty($studentsNotGraded)) {
                         $isEmpty = true;
                     } else {
+                        $count = 0;
                         array_map(function ($student) {
-                            global $courseDetails;
-                            echo '<tr class="bg-orange-100 p-0 odd:bg-orange-300 my-5"><td class="py-2">', $student['name'], '</td><td>', $student['regNo'], '</td>', ($_SESSION['isGradeEntryAllowed'] == '1') && ($courseDetails['isSubmitted'] == '0') ? '<td class="py-1 bg-white px-2 w-1/4"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Enter Grade</a></td>' : '', '</tr>';
+                            global $courseDetails, $count;
+                            $count++;
+                            echo '<tr class="bg-orange-100 p-0 odd:bg-orange-300 my-5"><td>', $count, '</td><td class="py-2">', $student['name'], '</td><td>', $student['regNo'], '</td>', ($_SESSION['isGradeEntryAllowed'] == '1') && ($courseDetails['isSubmitted'] == '0') ? '<td class="py-1 bg-white px-2 w-1/4"><a class=" w-full bg-green-700 text-center flex items-center justify-center text-white py-1 px-3 " href="' . rootUrl . '/pages/gradeEntryForm.php?course_id=' . $courseDetails['id'] . '&regNo=' . $student['regNo'] . '">Enter Grade</a></td>' : '', '</tr>';
                         }, $studentsNotGraded);
                     }
 

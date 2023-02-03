@@ -42,7 +42,7 @@ if (isset($_POST['submit']) && isset($_SESSION['currentSemester']) && isset($_PO
         $result = mysqli_query($conn, $sql);
         $studentsNotGraded = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-        if (empty($studentsNotGraded)) {
+        if (empty($studentsNotGraded) && ($courseDetails['isSubmitted']=='0')) {
             //sql for updating course
             $sql = "UPDATE course SET isSubmitted = '1' WHERE id='$requestedCourseId'";
 

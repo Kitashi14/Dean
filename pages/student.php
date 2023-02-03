@@ -159,6 +159,7 @@ if ($viewResult) {
         <table class="w-full text-center mt-3">
             <thead class="bg-green-600 py-4">
                 <tr>
+                    <th class="py-2">Sr No</th>
                     <th class="py-2">Name</th>
                     <th class="py-2">Code</th>
                     <th class="py-2">Credit</th>
@@ -177,10 +178,13 @@ if ($viewResult) {
                     $isEmpty = true;
                 } else {
                     $totalCredits = 0;
+                    $count = 0;
                     array_map(function ($course) {
+                        global $count;
+                        $count++;
                         global $totalCredits;
                         $totalCredits = (int)$course['credit'] + $totalCredits;
-                        echo '<tr class="bg-green-100 odd:bg-green-300"><td>', $course['courseName'], '</td><td>', $course['courseCode'], '</td><td>', $course['credit'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['internal'], '</td><td>', $course['isTheory'] == 0 ? '--' : $course['midsem'], '</td><td>', $course['endsem'], '</td></tr>';
+                        echo '<tr class="bg-green-100 odd:bg-green-300"><td>', $count, '</td><td>', $course['courseName'], '</td><td>', $course['courseCode'], '</td><td>', $course['credit'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['internal'], '</td><td>', $course['isTheory'] == 0 ? '--' : $course['midsem'], '</td><td>', $course['endsem'], '</td></tr>';
                     }, $studentCourses);
                     echo '<tr class="bg-green-800 text-white mt-2 font-bold"><td>Total Credits</td><td></td><td>', $totalCredits, '</td><td></td><td></td><td></td><td></td></tr>';
                 }

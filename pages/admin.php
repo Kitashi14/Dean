@@ -54,6 +54,7 @@ $notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <table class="w-full text-center mt-3 ">
             <thead class="bg-red-600 py-4">
                 <tr>
+                    <th class="py-2">Sr No</th>
                     <th class="py-2">Course ID</th>
                     <th class="py-2">Course Name</th>
                     <th class="py-2">Type</th>
@@ -71,8 +72,11 @@ $notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 if (empty($notSubmittedCourses)) {
                     $isEmpty = true;
                 } else {
+                    $count = 0;
                     array_map(function ($course) {
-                        echo '<tr class="bg-red-100 p-0 odd:bg-red-300"><td>', $course['id'], '</td><td>', $course['courseName'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['program'], '</td><td>', $course['name'], '</td><td>', $course['employee_id'], '</td></tr>';
+                        global $count;
+                        $count++;
+                        echo '<tr class="bg-red-100 p-0 odd:bg-red-300"><td>', $count, '</td><td>', $course['id'], '</td><td>', $course['courseName'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['program'], '</td><td>', $course['name'], '</td><td>', $course['employee_id'], '</td></tr>';
                     }, $notSubmittedCourses);
                 }
 
