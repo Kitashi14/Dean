@@ -1,7 +1,25 @@
 <!-- view transcript page  -->
 <?php
-// importing header component
-include './../inc/header.php';
+
+$rootDir = $_SERVER['DOCUMENT_ROOT'] . '/deanproject';
+require_once($rootDir . '/config.php');
+
+//starting session
+session_start();
+
+//connecting to database
+require_once($rootDir . '/database.php');
+
+
+//fetching current status of the site so that at every reload of any page it fetches latest status
+$sql = 'SELECT * FROM status ORDER BY id DESC LIMIT 1';
+$result = mysqli_query($conn, $sql);
+$status = mysqli_fetch_all($result, MYSQLI_ASSOC)[0];
+
+// storing current status in session superglobals
+$_SESSION['currentSemester'] = $status['currentSemester'];
+$_SESSION['isCourseEntryAllowed'] = $status['isCourseEntryAllowed'];
+$_SESSION['isGradeEntryAllowed'] = $status['isGradeEntryAllowed'];
 
 try {
     // checking if required query variables is present in the request
@@ -63,104 +81,163 @@ $theoryGrades = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $maxSemester = $isCurSemResultReleased ? (int)$currentSemester : (int)$currentSemester - 1;
 
 
+//calculating cpi
+$gradeTable = [
+    'A+' => 10,
+    'A' => 9,
+    'B+' => 8,
+    'B' => 7,
+    'C' => 6,
+    'D' => 4,
+    'E' => 2,
+    'F' => 0
+];
+$cpiTillSemester = $isCurSemResultReleased ? $currentSemester : (int)$currentSemester - 1;
+$CPIcreditObtained = 0;
+$CPItotalCreditAvailable = 0;
+
+//practical grades
+array_map(function ($grade) {
+    global $cpiTillSemester;
+    if ($grade['semester'] <= $cpiTillSemester) {
+        global $CPIcreditObtained, $CPItotalCreditAvailable, $gradeTable;
+        $CPIcreditObtained = $CPIcreditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
+        $CPItotalCreditAvailable = $CPItotalCreditAvailable + (int)$grade['credit'];
+    }
+}, $practicalGrades);
+
+//theory grades
+array_map(function ($grade) {
+    global $cpiTillSemester;
+    if ($grade['semester'] <= $cpiTillSemester) {
+        global $CPIcreditObtained, $CPItotalCreditAvailable, $gradeTable;
+        $CPIcreditObtained = $CPIcreditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
+        $CPItotalCreditAvailable = $CPItotalCreditAvailable + (int)$grade['credit'];
+    }
+}, $theoryGrades);
+
+$cpi = 'NA';
+if ($CPItotalCreditAvailable > 0) {
+    $cpi = round($CPIcreditObtained / $CPItotalCreditAvailable, 2);
+}
+
 
 ?>
-<div class="flex justify-center items-center w-full h-10 text-4xl font-medium">Transcript Page</div>
-<div class=" p-5 w-full">
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class=" w-full h-full flex flex-wrap">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dean Project</title>
 
-        <?php
-        $gradeTable = [
-            'A+' => 10,
-            'A' => 9,
-            'B+' => 8,
-            'B' => 7,
-            'C' => 6,
-            'D' => 4,
-            'E' => 2,
-            'F' => 0
-        ];
-        for ($semesterNo = 1; $semesterNo <= $maxSemester; $semesterNo++) {
-            $creditObtained = 0;
-            $totalCreditAvailable = 0;
-            $subjectFailed = 0;
+    <!-- setting favicon  -->
+    <link rel="shortcut icon" href="<?php echo rootUrl ?>/src/images/mnnit_logo.png">
 
-            //storing all grades of selected semester
-            $semGrades = [];
-            array_map(function ($grade) {
-                global $semesterNo, $semGrades;
-                if ((int)$grade['semester'] == $semesterNo) {
-                    global $creditObtained, $totalCreditAvailable, $subjectFailed, $gradeTable;
-                    $creditObtained = $creditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
-                    $totalCreditAvailable = $totalCreditAvailable + (int)$grade['credit'];
-                    $subjectFailed = $subjectFailed + ($gradeTable[$grade['grade']] < 4 ? 1 : 0);
-                    array_push($semGrades, $grade);
-                }
-            }, $practicalGrades);
+    <!-- loading fonts  -->
+    <link href="https://fonts.googleapis.com/css2?family=Acme&family=Kurale&family=Laila:wght@300;500&family=Lalezar&family=Lato:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet" />
 
-            array_map(function ($grade) {
-                global $semesterNo, $semGrades;
-                if ((int)$grade['semester'] == $semesterNo) {
-                    global $creditObtained, $totalCreditAvailable, $subjectFailed, $gradeTable;
-                    $creditObtained = $creditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
-                    $totalCreditAvailable = $totalCreditAvailable + (int)$grade['credit'];
-                    $subjectFailed = $subjectFailed + ($gradeTable[$grade['grade']] < 4 ? 1 : 0);
-                    array_push($semGrades, $grade);
-                }
-            }, $theoryGrades);
+    <!-- tailwind cdn link -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-            $spi = 'NA';
-            if ($totalCreditAvailable > 0) {
-                $spi = round($creditObtained / $totalCreditAvailable, 2);
-                $semResult = ($spi < 5) || ($subjectFailed > 4) ? 'Failed' : 'Passed';
-            } else {
-                $semResult = 'NA';
-            }
+<body class="relative min-h-screen ">
+
+    <div class="pb-16">
+        <div class="w-full  flex justify-start pl-5"><a href="./../index.php" class="border-solid border-2 rounded-sm px-3 py-0 border-black font-serif underline">Home</a></div>
+
+        <div class="flex justify-center items-center w-full h-10 text-4xl font-medium font-serif underline">Transcript</div>
+        <div class=" p-5 w-full">
+            <div class="flex flex-row px-5">
+                <h2 class="block mb-2 pr-2 text-m font-bold font-serif ">Name: <span class="font-sans"><?php echo $_SESSION['name'] ?></span></h2>
+                <h2 class="block mb-2 px-2 text-m font-bold font-serif ">Reg No: <span class="font-mono"><?php echo $_SESSION['regNo'] ?></span></h2>
+                <h2 class="block mb-2 px-2 text-m font-bold font-serif ">Program: <span class="font-sans"><?php echo $_SESSION['program'] ?></span></h2>
+            </div>
+
+            <h2 class="block mb-2 px-5 text-m font-bold font-serif underline">CPI: <span class="font-mono"><?php echo $cpi ?></span></h2>
+            <div class=" w-full h-full flex flex-wrap justify-between">
+
+                <?php
+                for ($semesterNo = 1; $semesterNo <= $maxSemester; $semesterNo++) {
+                    $creditObtained = 0;
+                    $totalCreditAvailable = 0;
+                    $subjectFailed = 0;
+
+                    //storing all grades of selected semester
+                    $semGrades = [];
+                    array_map(function ($grade) {
+                        global $semesterNo, $semGrades;
+                        if ((int)$grade['semester'] == $semesterNo) {
+                            global $creditObtained, $totalCreditAvailable, $subjectFailed, $gradeTable;
+                            $creditObtained = $creditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
+                            $totalCreditAvailable = $totalCreditAvailable + (int)$grade['credit'];
+                            $subjectFailed = $subjectFailed + ($gradeTable[$grade['grade']] < 4 ? 1 : 0);
+                            array_push($semGrades, $grade);
+                        }
+                    }, $practicalGrades);
+
+                    array_map(function ($grade) {
+                        global $semesterNo, $semGrades;
+                        if ((int)$grade['semester'] == $semesterNo) {
+                            global $creditObtained, $totalCreditAvailable, $subjectFailed, $gradeTable;
+                            $creditObtained = $creditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
+                            $totalCreditAvailable = $totalCreditAvailable + (int)$grade['credit'];
+                            $subjectFailed = $subjectFailed + ($gradeTable[$grade['grade']] < 4 ? 1 : 0);
+                            array_push($semGrades, $grade);
+                        }
+                    }, $theoryGrades);
+
+                    $spi = 'NA';
+                    if ($totalCreditAvailable > 0) {
+                        $spi = round($creditObtained / $totalCreditAvailable, 2);
+                        $semResult = ($spi < 5) || ($subjectFailed > 4) ? 'Failed' : 'Passed';
+                    } else {
+                        $semResult = 'NA';
+                    }
 
 
 
-            echo '<div class="w-1/2 p-4 mt-5 ">
-            <h2 class="text-xl font-normal text-green-700 px-3">Semester: ', $semesterNo, ' (', $semResult, ')</h2>
-            <div class="border-2 border-black mt-3 ">
+                    echo '<div class="w-1/2 p-4 mt-5 ">
+            <h2 class="text-xl font-normal underline px-3 font-serif">Semester: <span class="font-mono">', $semesterNo, '</span> (', $semResult, ')</h2>
             <table class="w-full text-center ">
-                <thead class="bg-green-600 py-4">
+                <thead class="py-4 border-solid border-4 border-black border-b-2">
                     <tr>
-                        <th class="py-2">Course Code</th>
-                        <th class="py-2">Course Name</th>
-                        <th class="py-2">Credits</th>
-                        <th class="py-2">Grades</th>
+                        <th class="py-2 border-solid border-r-2 border-black">Course Code</th>
+                        <th class="py-2 border-solid border-r-2 border-black">Course Name</th>
+                        <th class="py-2 border-solid border-r-2 border-black">Credits</th>
+                        <th class="py-2 border-solid border-r-0 border-black">Grades</th>
                     </tr>
                 </thead>
 
-                <tbody class="py-4">
+                <tbody class="py-4 border-solid border-4 border-black border-t-2">
                     ';
-            $isEmpty = false;
+                    $isEmpty = false;
 
-            if (empty($semGrades)) {
-                $isEmpty = true;
-            } else {
-                array_map(function ($course) {
-                    echo '<tr class="bg-green-100 odd:bg-green-300"><td>', $course['courseCode'], '</td><td>', $course['courseName'], '</td><td>', $course['credit'], '</td><td>', $course['grade'], '</td></tr>';
-                }, $semGrades);
-                echo '<tr class="bg-white mt-2 font-bold"><td></td><td></td><td>SPI</td><td>', $spi, '</td></tr>';
-            }
-            echo '</tbody>
+                    if (empty($semGrades)) {
+                        $isEmpty = true;
+                    } else {
+                        array_map(function ($course) {
+                            echo '<tr class="border-solid border-b-2 border-black"><td class="border-solid border-r-2 border-black">', $course['courseCode'], '</td><td class="border-solid border-r-2 border-black">', $course['courseName'], '</td><td class="border-solid border-r-2 border-black">', $course['credit'], '</td><td>', $course['grade'], '</td></tr>';
+                        }, $semGrades);
+                        echo '<tr class="bg-white mt-2 font-bold"><td></td><td></td><td>SPI</td><td>', $spi, '</td></tr>';
+                    }
+                    echo '</tbody>
 
 
             </table>';
-            echo $isEmpty ? '<h3 class="w-full bg-green-200 py-2 text-center">No courses available</h3>' : '';
+                    echo $isEmpty ? '<h3 class="w-full  py-2 text-center border-4 border-t-0 border-black font-sans">No courses available</h3>' : '';
 
-            echo '</div></div>';
-        }
-        ?>
+                    echo '</div>';
+                }
+                ?>
+
+            </div>
+
+        </div>
+
 
     </div>
+</body>
 
-</div>
-
-<?php
-
-// importing footer component
-include './../inc/footer.php';
-?>
+</html>

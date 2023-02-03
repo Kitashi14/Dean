@@ -23,52 +23,87 @@ $sql = "SELECT * FROM course WHERE program = '$program' AND semester = '$current
 $result = mysqli_query($conn, $sql);
 $studentCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+//fetching theory grades of all semester
+$sql = "SELECT c.credit, g.grade, c.semester FROM course c, theoryGrade g WHERE g.regNo = '$regNo' AND g.course_id = c.id";
+$result = mysqli_query($conn, $sql);
+$theoryGrades = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+//fetching practical grades for all semester
+$sql = "SELECT c.credit, g.grade, c.semester FROM course c, practicalGrade g WHERE g.regNo = '$regNo' AND g.course_id = c.id";
+$result = mysqli_query($conn, $sql);
+$practicalGrades = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+
 //determining if result released for current semester
-//      checking if all courses submitted 
 $cousesNotSubmitted = array_filter($studentCourses, fn ($course) => $course['isSubmitted'] == '0');
 echo '<br>';
 $viewResult = (empty($cousesNotSubmitted)) && ($_SESSION['isGradeEntryAllowed'] == '0') ? true : false;
 
+//calculating cpi
+$gradeTable = [
+    'A+' => 10,
+    'A' => 9,
+    'B+' => 8,
+    'B' => 7,
+    'C' => 6,
+    'D' => 4,
+    'E' => 2,
+    'F' => 0
+];
+$cpiTillSemester = $viewResult ? $currentSemester : (int)$currentSemester - 1;
+$CPIcreditObtained = 0;
+$CPItotalCreditAvailable = 0;
+
+//practical grades
+array_map(function ($grade) {
+    global $cpiTillSemester;
+    if ($grade['semester'] <= $cpiTillSemester) {
+        global $CPIcreditObtained, $CPItotalCreditAvailable, $gradeTable;
+        $CPIcreditObtained = $CPIcreditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
+        $CPItotalCreditAvailable = $CPItotalCreditAvailable + (int)$grade['credit'];
+    }
+}, $practicalGrades);
+
+//theory grades
+array_map(function ($grade) {
+    global $cpiTillSemester;
+    if ($grade['semester'] <= $cpiTillSemester) {
+        global $CPIcreditObtained, $CPItotalCreditAvailable, $gradeTable;
+        $CPIcreditObtained = $CPIcreditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
+        $CPItotalCreditAvailable = $CPItotalCreditAvailable + (int)$grade['credit'];
+    }
+}, $theoryGrades);
+
+$cpi = 'NA';
+if ($CPItotalCreditAvailable > 0) {
+    $cpi = round($CPIcreditObtained / $CPItotalCreditAvailable, 2);
+}
+
+//if result released
 if ($viewResult) {
     //determining result summary
     $creditObtained = 0;
     $totalCreditAvailable = 0;
     $subjectFailed = 0;
-    $gradeTable = [
-        'A+' => 10,
-        'A' => 9,
-        'B+' => 8,
-        'B' => 7,
-        'C' => 6,
-        'D' => 4,
-        'E' => 2,
-        'F' => 0
-    ];
-
-    //fetching practical grades
-    $sql = "SELECT c.credit, g.grade FROM course c, practicalGrade g WHERE g.regNo = '$regNo' AND g.course_id = c.id AND c.semester = '$currentSemester'";
-    $result = mysqli_query($conn, $sql);
-    $practicalGrades = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    // print_r($practicalGrades);
 
     array_map(function ($grade) {
-        global $creditObtained, $totalCreditAvailable, $subjectFailed, $gradeTable;
-        $creditObtained = $creditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
-        $totalCreditAvailable = $totalCreditAvailable + (int)$grade['credit'];
-        $subjectFailed = $subjectFailed + ($gradeTable[$grade['grade']] < 4 ? 1 : 0);
+        global $currentSemester;
+        if ($grade['semester'] == $currentSemester) {
+            global $creditObtained, $totalCreditAvailable, $subjectFailed, $gradeTable;
+            $creditObtained = $creditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
+            $totalCreditAvailable = $totalCreditAvailable + (int)$grade['credit'];
+            $subjectFailed = $subjectFailed + ($gradeTable[$grade['grade']] < 4 ? 1 : 0);
+        }
     }, $practicalGrades);
 
-    //fetching theory grades
-    $sql = "SELECT c.credit, g.grade FROM course c, theoryGrade g WHERE g.regNo = '$regNo' AND g.course_id = c.id AND c.semester = '$currentSemester'";
-    $result = mysqli_query($conn, $sql);
-    $theoryGrades = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    // print_r($theoryGrades);
-
     array_map(function ($grade) {
-        global $creditObtained, $totalCreditAvailable, $subjectFailed, $gradeTable;
-        $creditObtained = $creditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
-        $totalCreditAvailable = $totalCreditAvailable + (int)$grade['credit'];
-        $subjectFailed = $subjectFailed + ($gradeTable[$grade['grade']] < 4 ? 1 : 0);
+        global $currentSemester;
+        if ($grade['semester'] == $currentSemester) {
+            global $creditObtained, $totalCreditAvailable, $subjectFailed, $gradeTable;
+            $creditObtained = $creditObtained + ($gradeTable[$grade['grade']] * (int)$grade['credit']);
+            $totalCreditAvailable = $totalCreditAvailable + (int)$grade['credit'];
+            $subjectFailed = $subjectFailed + ($gradeTable[$grade['grade']] < 4 ? 1 : 0);
+        }
     }, $theoryGrades);
 
     $spi = 'NA';
@@ -100,6 +135,8 @@ if ($viewResult) {
             <div class="bg-gray-200 mt-1 w-1/2 flex flex-col justify-around items-center ">
                 <h2 class="block mb-2 text-lg font-bold text-blue-900"> Current Semester : <?php echo $_SESSION['currentSemester'] ?></h2>
 
+                <h2 class="block mb-2 text-m font-bold text-sky-600">CPI: <?php echo $cpi ?></h2>
+
                 <h2 class="block mb-2 text-xl font-bold text-blue-600" <?php echo $viewResult ? 'style="display: none;"' : '' ?>> Result not released</h2>
 
                 <?php echo $viewResult ? '<h2 class="block mb-2 text-m font-bold text-gray-600">SPI: ' . $spi . '</h2>' : '' ?>
@@ -118,7 +155,7 @@ if ($viewResult) {
 
     <!-- course details of current semester  -->
     <div class="p-4 mt-5">
-        <h2 class="text-xl font-normal text-green-700 px-3">Courses in this semester: </h2>
+        <h2 class="text-xl font-normal text-green-700 px-3">Courses in current semester: </h2>
         <table class="w-full text-center mt-3">
             <thead class="bg-green-600 py-4">
                 <tr>

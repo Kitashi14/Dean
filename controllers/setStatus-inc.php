@@ -25,7 +25,7 @@ if (isset($_POST['submit'])&& isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'
     } else {
 
         //checking semester value is in range or not
-        if ($setCurrentSemester > 12 || $setCurrentSemester < $_SESSION['currentSemester']) {
+        if ($setCurrentSemester > 12 || $setCurrentSemester <= $_SESSION['currentSemester']) {
 
             //for invalid entry redirecting to form page
             echo '<script>alert("Invalid semester");';
