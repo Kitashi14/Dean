@@ -19,7 +19,7 @@ $currentSemester = $_SESSION['currentSemester'];
 $program = $_SESSION['program'];
 
 //fetching student courses from db for current semester
-$sql = "SELECT * FROM course WHERE program = '$program' AND semester = '$currentSemester'";
+$sql = "SELECT * FROM course WHERE program = '$program' AND semester = '$currentSemester' ORDER BY isTheory DESC";
 $result = mysqli_query($conn, $sql);
 $studentCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 

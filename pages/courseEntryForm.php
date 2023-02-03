@@ -53,7 +53,7 @@ if (isset($_GET['course_id'])) {
                 Semester : <?php echo ((int)$_SESSION['currentSemester'] + 1); ?>
             </h1>
             <div class="block text-xl font-bold text-orange-500">
-                <?php echo $formType; ?> Grade Form
+                <?php echo $formType; ?> Course Form
             </div>
             <hr class="h-0.5 bg-orange-500 mx-4 w-full">
             <div class="w-full space-y-1">

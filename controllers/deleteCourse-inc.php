@@ -20,10 +20,10 @@ if (isset($_SESSION['uid']) && isset($_SESSION['category']) && isset($_SESSION['
             //storing required variables
             $requestedCourseId = $_GET['course_id'];
             $eid = $_SESSION['eid'];
-            $currentSemester = $_SESSION['currentSemester'];
+            $fetchSemester = (int)$_SESSION['currentSemester'] + 1;
 
             //checking authencity
-            $sql = "SELECT * FROM course WHERE id = '$requestedCourseId' AND employee_id='$eid' AND semester='$currentSemester'";
+            $sql = "SELECT * FROM course WHERE id = '$requestedCourseId' AND employee_id='$eid' AND semester='$fetchSemester'";
             $result = mysqli_query($conn, $sql);
             $courseDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
             if (empty($courseDetails)) {

@@ -20,7 +20,7 @@ $currentSemester = $_SESSION['currentSemester'];
 $fetchSemester = $_SESSION['isCourseEntryAllowed'] == '1' ? (int)$currentSemester + 1 : $currentSemester;
 
 //fetching employee courses from db for next/current semester
-$sql = "SELECT * FROM course WHERE employee_id = '$eid' AND semester = '$fetchSemester' ORDER BY courseName ASC";
+$sql = "SELECT * FROM course WHERE employee_id = '$eid' AND semester = '$fetchSemester' ORDER BY isTheory DESC";
 $result = mysqli_query($conn, $sql);
 $employeeCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 

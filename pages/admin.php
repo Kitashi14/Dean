@@ -16,7 +16,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['isAdmin'])) {
 $currentSemester = $_SESSION['currentSemester'];
 
 //fetching employee who have not submitted their courses yet
-$sql = "SELECT e.name, c.id, c.employee_id, c.courseName, c.program , c.isTheory FROM course c, employee e WHERE c.isSubmitted='0' AND c.semester = '$currentSemester' AND e.id=c.employee_id";
+$sql = "SELECT e.name, c.id, c.employee_id, c.courseName, c.program , c.isTheory FROM course c, employee e WHERE c.isSubmitted='0' AND c.semester = '$currentSemester' AND e.id=c.employee_id  ORDER BY e.name ASC";
 $result = mysqli_query($conn, $sql);
 $notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
