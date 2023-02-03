@@ -186,7 +186,7 @@ if ($viewResult) {
                         $totalCredits = (int)$course['credit'] + $totalCredits;
                         echo '<tr class="bg-green-100 odd:bg-green-300"><td>', $count, '</td><td>', $course['courseName'], '</td><td>', $course['courseCode'], '</td><td>', $course['credit'], '</td><td>', $course['isTheory'] == 1 ? 'Theory' : 'Practical', '</td><td>', $course['internal'], '</td><td>', $course['isTheory'] == 0 ? '--' : $course['midsem'], '</td><td>', $course['endsem'], '</td></tr>';
                     }, $studentCourses);
-                    echo '<tr class="bg-green-800 text-white mt-2 font-bold"><td>Total Credits</td><td></td><td>', $totalCredits, '</td><td></td><td></td><td></td><td></td></tr>';
+                    echo '<tr class="bg-green-800 text-white mt-2 font-bold"><td></td><td>Total Credits</td><td></td><td>', $totalCredits, '</td><td></td><td></td><td></td><td></td></tr>';
                 }
 
 

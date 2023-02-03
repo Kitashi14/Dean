@@ -27,9 +27,9 @@ if (isset($_GET['course_id'])) {
         $requestedCourseId = $_GET['course_id'];
         $eid = $_SESSION['eid'];
         $currentSemester = $_SESSION['currentSemester'];
-
+        $fetchSemester = (int)$currentSemester + 1;
         //is case of update form checking authencity
-        $sql = "SELECT * FROM course WHERE id = '$requestedCourseId' AND employee_id='$eid' AND semester='$currentSemester'";
+        $sql = "SELECT * FROM course WHERE id = '$requestedCourseId' AND employee_id='$eid' AND semester='$fetchSemester'";
         $result = mysqli_query($conn, $sql);
         $courseDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
         if (empty($courseDetails)) {
@@ -91,26 +91,26 @@ if (isset($_GET['course_id'])) {
             <div class="w-full flex flex-row justify-around">
                 <label class="w-1/2 block text-sm font-bold text-gray-700 ml-6" for="">Select type </label>
                 <div class="w-1/2">
-                    <input type="radio" name="type" value="theory" <?php echo $formType == 'Update' && (bool)$courseDetails['isTheory'] == true ? 'checked' : '' ?> required> Theory <br>
-                    <input type="radio" name="type" value="practical" <?php echo $formType == 'Update' && (bool)$courseDetails['isTheory'] == false ? 'checked' : '' ?> required> Practical
+                    <input id="selectedTheory" type="radio" name="type" value="theory" <?php echo $formType == 'Update' && (bool)$courseDetails['isTheory'] == true ? 'checked' : '' ?> required> Theory <br>
+                    <input id="selectedPractical" type="radio" name="type" value="practical" <?php echo $formType == 'Update' && (bool)$courseDetails['isTheory'] == false ? 'checked' : '' ?> required> Practical
                 </div>
 
             </div>
             <div class="w-full space-y-2 ">
-                <label for="internal" class="block mb-2 text-sm font-bold text-gray-700">
+                <label for="internal" class="block  text-sm font-bold text-gray-700">
                     Max. marks for internal
                 </label>
                 <input id="internal" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="internal" min="0" max="100" placeholder="Enter internal marks" <?php echo $formType == 'Update' ? 'value="' . $courseDetails['internal'] . '"' : 'value="0"' ?> required>
             </div>
-            <div class="w-full space-y-2 ">
-                <label for="midSem" class="block mb-2 text-sm font-bold text-gray-700">
+            <div id="midsemInput" class="w-full space-y-2 ">
+                <label for="midSem" class="block  text-sm font-bold text-gray-700">
                     Max. marks for mid sem
                 </label>
-                <span class="text-xs text-red-500"><i>* leave it 0 if practical course</i></span>
+
                 <input id="midSem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="midSem" min="0" max="100" placeholder="Enter midsem marks" <?php echo $formType == 'Update' ? 'value="' . $courseDetails['midsem'] . '"' : 'value="0"'  ?> required>
             </div>
             <div class="w-full space-y-2 ">
-                <label for="endSem" class="block mb-2 text-sm font-bold text-gray-700">
+                <label for="endSem" class="block  text-sm font-bold text-gray-700">
                     Max. marks for end sem
                 </label>
 
@@ -124,6 +124,24 @@ if (isset($_GET['course_id'])) {
         </div>
     </form>
 </div>
+
+<script>
+    var theoryButton = document.querySelector('#selectedTheory');
+    var practicalButton = document.querySelector('#selectedPractical');
+
+    if (practicalButton.checked) {
+        document.querySelector('#midsemInput').style.display = "none";
+        document.querySelector('#midSem').value = "0";
+    }
+
+    theoryButton.addEventListener('click', (e) => {
+        document.querySelector('#midsemInput').style.display = "";
+    })
+    practicalButton.addEventListener('click', (e) => {
+        document.querySelector('#midsemInput').style.display = "none";
+        document.querySelector('#midSem').value = "0";
+    })
+</script>
 
 <?php
 
