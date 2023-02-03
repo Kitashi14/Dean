@@ -72,7 +72,11 @@ $result = mysqli_query($conn, $sql);
 $gradeDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 //setting type of form
-$formType = empty($gradeDetails) ? 'Enter' : 'Update';
+$formType = 'Enter';
+if (!empty($gradeDetails)) {
+    $gradeDetails = $gradeDetails[0];
+    $formType = 'Update';
+}
 
 
 ?>
@@ -111,21 +115,21 @@ $formType = empty($gradeDetails) ? 'Enter' : 'Update';
                 <label for="internal" class="block mb-2 text-sm font-bold text-gray-700">
                     Internal marks :
                 </label>
-                <input id="internal" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="internal" value="0" min="0" max="<?php echo $courseDetails['internal'] ?>" placeholder="Enter internal marks" required>
+                <input id="internal" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="internal" value="<?php echo $formType == 'Update' ? $gradeDetails['internal'] : '0' ?>" min="0" max="<?php echo $courseDetails['internal'] ?>" placeholder="Enter internal marks" required>
             </div>
 
             <div class="w-full space-y-1" <?php echo  $courseDetails['isTheory'] == '0' ? 'style="display: none;"' : '' ?>>
                 <label for="midsem" class="block mb-2 text-sm font-bold text-gray-700">
                     Midsem marks :
                 </label>
-                <input id="midsem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="midSem" min="0" max="<?php echo $courseDetails['midsem'] ?>" placeholder="Enter midsem marks" value="0" required>
+                <input id="midsem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="midSem" min="0" max="<?php echo $courseDetails['midsem'] ?>" placeholder="Enter midsem marks" value="<?php echo $formType == 'Update' ? $gradeDetails['midsem'] : '0' ?>" required>
             </div>
 
             <div class="w-full space-y-1">
                 <label for="endsem" class="block mb-2 text-sm font-bold text-gray-700">
                     Endsem marks :
                 </label>
-                <input id="endsem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="endSem" value="0" min="0" max="<?php echo $courseDetails['endsem'] ?>" placeholder="Enter endsem marks" required>
+                <input id="endsem" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="endSem" value="<?php echo $formType == 'Update' ? $gradeDetails['endsem'] : '0' ?>" min="0" max="<?php echo $courseDetails['endsem'] ?>" placeholder="Enter endsem marks" required>
             </div>
 
 

@@ -18,7 +18,7 @@ $eid = $_SESSION['eid'];
 $currentSemester = $_SESSION['currentSemester'];
 
 //fetching employee courses from db for current semester
-$sql = "SELECT * FROM course WHERE employee_id = '$eid' AND semester = '$currentSemester'";
+$sql = "SELECT * FROM course WHERE employee_id = '$eid' AND semester = '$currentSemester' ORDER BY courseName ASC";
 $result = mysqli_query($conn, $sql);
 $employeeCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
