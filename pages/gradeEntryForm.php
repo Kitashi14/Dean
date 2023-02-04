@@ -105,9 +105,9 @@ if (!empty($gradeDetails)) {
                 Course : <?php echo ucwords($courseDetails['courseName']), ' (', $courseDetails['courseCode'], ')'; ?>
             </div>
 
-            <div class="mb-3 w-1/3 flex flex-col items-center text-red-600">
-                (if absent)
-                <input type="submit" class="w-full h-8 bg-orange-600 rounded-lg hover:bg-orange-800  text-white " name="submit" value="Absent">
+            <div class="mb-3 w-2/3 flex flex-col items-center text-red-600">
+                (if absent in endsem)
+                <input type="submit" class="w-2/3 h-8 bg-orange-600 rounded-lg hover:bg-orange-800  text-white " name="submit" value="Absent">
 
             </div>
 
