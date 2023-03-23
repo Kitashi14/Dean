@@ -25,14 +25,19 @@ $notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 <!-- set status form  -->
 <div class="flex flex-col justify-between p-2 bg-orange-200  container mx-auto w-1/3  mt-10 rounded-lg border ">
-    <form action="<?php echo rootUrl . '/controllers/setStatus-inc.php' ?>" method="POST" class="px-8 pt-6 pb-8 mb-0 bg-white rounded">
+    <form action="<?php echo rootUrl . '/controllers/setStatus-inc.php' ?>" method="POST"
+        class="px-8 pt-6 pb-8 mb-0 bg-white rounded">
         <div class="flex flex-col justify-around  p-3 space-y-4 items-center">
 
             <div class="w-full space-y-1">
                 <label for="semester" class="block mb-2 text-sm font-bold text-center text-gray-700">
                     Semester
                 </label>
-                <input id="semester" class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline" type="number" name="setSemester" min="<?php echo $currentSemester ?>" max="<?php echo empty($notSubmittedCourses) ? $currentSemester : '8' ?>" value="<?php echo $currentSemester ?>" placeholder="Enter  semester" required>
+                <input id="semester"
+                    class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none mb-4 focus:outline-none focus:shadow-outline"
+                    type="number" name="setSemester" min="<?php echo $currentSemester ?>"
+                    max="<?php echo empty($notSubmittedCourses) ? '8' : $currentSemester ?>"
+                    value="<?php echo $currentSemester ?>" placeholder="Enter  semester" required>
             </div>
             <br>
             <div class="w-full flex flex-row justify-around items-center">
@@ -48,7 +53,8 @@ $notSubmittedCourses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 
             <div class="mb-3 w-1/3 bg-red-400">
-                <input type="submit" class="w-full h-8 bg-green-800 hover:bg-green-600 text-white " name="submit" value="Set">
+                <input type="submit" class="w-full h-8 bg-green-800 hover:bg-green-600 text-white " name="submit"
+                    value="Set">
             </div>
 
         </div>
